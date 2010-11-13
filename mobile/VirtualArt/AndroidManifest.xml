@@ -32,6 +32,9 @@
         <activity android:name=".CameraActivity"
             android:label="@string/camera">
         </activity>
+        <activity android:name=".PostActivity"
+            android:label="Post">
+        </activity>
     </application>
 
     <uses-sdk android:minSdkVersion="4" />

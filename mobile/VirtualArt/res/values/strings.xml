@@ -7,4 +7,5 @@
     <string name="paint">Paint</string>
     <string name="sensor">Sensor</string>
     <string name="camera">Camera</string>
+    <string name="post">Post</string>
 </resources>

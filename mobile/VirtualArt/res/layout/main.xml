@@ -30,6 +30,11 @@
             android:layout_height="wrap_content" 
             android:text="@string/camera"
             />
+        <Button android:id="@+id/post_button"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:text="@string/post"
+            />
         <!--
         -->
     </LinearLayout>
