@@ -41,11 +41,11 @@ public class MainActivity extends Activity {
         });
 
 		final Button cameraButton  = (Button)this.findViewById(R.id.camera_button);
-        cameraButton.setOnClickListener(new View.OnClickListener() {
+        /*cameraButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
         		Intent myIntent = new Intent(MainActivity.this, CameraActivity.class);
         		MainActivity.this.startActivity(myIntent);
         	}        	
-        });
+        });*/
     }
 }
