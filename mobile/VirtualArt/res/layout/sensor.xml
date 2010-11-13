@@ -35,7 +35,7 @@
             android:padding="3dip" />
         <TextView
             android:id="@+id/accel_z_value"
-            android:text="Z Value"
+            android:text="Y Value"
             android:gravity="right"
             android:padding="3dip" />
     </TableRow>
@@ -67,6 +67,47 @@
     </TableRow>
 
     <View
+        android:layout_height="2dip"
+		android:background="#FF909090" />
+
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Compass X"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/compass_x_value"
+            android:text="X Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Compass Y"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/compass_y_value"
+            android:text="Y Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Compass Z"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/compass_z_value"
+            android:text="Z Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+	<View
         android:layout_height="2dip"
         android:background="#FF909090" />
     
