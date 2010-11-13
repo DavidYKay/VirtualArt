@@ -20,7 +20,6 @@
         <activity android:name=".BrowserActivity"
                   android:label="@string/browser">
         </activity>
-
     </application>
     <uses-sdk android:minSdkVersion="4" />
 </manifest> 
