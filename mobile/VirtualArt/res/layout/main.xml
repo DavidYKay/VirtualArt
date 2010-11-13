@@ -20,6 +20,16 @@
             android:layout_height="wrap_content" 
             android:text="@string/paint"
             />
+        <Button android:id="@+id/sensor_button"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:text="@string/sensor"
+            />
+        <Button android:id="@+id/camera_button"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:text="@string/camera"
+            />
         <!--
         -->
     </LinearLayout>

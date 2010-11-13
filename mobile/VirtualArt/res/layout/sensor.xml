@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="1">
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Accelerometer X"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/accel_x_value"
+            android:text="X Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Accelerometer Y"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/accel_y_value"
+            android:text="Y Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Accelerometer Z"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/accel_z_value"
+            android:text="Y Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+
+    <!--
+    <TableRow>
+        <TextView
+            android:text="X"
+            android:padding="3dip" />
+        <TextView
+            android:text="Import..."
+            android:padding="3dip" />
+    </TableRow>
+    -->
+
+    <TableRow>
+        <TextView
+            android:text="Compass Bearing"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/compass_value"
+            android:text="Compass Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <View
+        android:layout_height="2dip"
+		android:background="#FF909090" />
+
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Compass X"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/compass_x_value"
+            android:text="X Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Compass Y"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/compass_y_value"
+            android:text="Y Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Compass Z"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/compass_z_value"
+            android:text="Z Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+	<View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+    
+    <TableRow>
+        <TextView
+            android:text="Calculated Pitch"
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/pitch_value"
+            android:text="Pitch Value"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+
+
+    <!--
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Quit"
+            android:padding="3dip" />
+    </TableRow>
+    -->
+</TableLayout>

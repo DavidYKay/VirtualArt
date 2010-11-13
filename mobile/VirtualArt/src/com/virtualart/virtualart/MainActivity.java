@@ -27,7 +27,23 @@ public class MainActivity extends Activity {
 		final Button paintButton  = (Button)this.findViewById(R.id.paint_button);
         paintButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        		Intent myIntent = new Intent(MainActivity.this, PaintActivity.class);
+        		Intent myIntent = new Intent(MainActivity.this, PaintActivity.class);        
+        		MainActivity.this.startActivity(myIntent);
+        	}        	
+        });
+
+		final Button sensorButton  = (Button)this.findViewById(R.id.sensor_button);
+        sensorButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+        		Intent myIntent = new Intent(MainActivity.this, SensorActivity.class);
+        		MainActivity.this.startActivity(myIntent);
+        	}        	
+        });
+
+		final Button cameraButton  = (Button)this.findViewById(R.id.camera_button);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+        		Intent myIntent = new Intent(MainActivity.this, CameraActivity.class);
         		MainActivity.this.startActivity(myIntent);
         	}        	
         });
