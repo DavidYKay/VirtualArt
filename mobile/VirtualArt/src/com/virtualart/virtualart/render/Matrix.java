@@ -23,6 +23,15 @@ public class Matrix {
 	public float b1, b2, b3;
 	public float c1, c2, c3;
 
+	public Matrix() {
+		//Empty
+	}
+
+	public Matrix(float a1, float a2, float a3, float b1, float b2,
+			float b3, float c1, float c2, float c3) {
+		this.set(a1, a2, a3, b1, b2, b3, c1, c2, c3);
+	}
+
 	public void set(float a1, float a2, float a3, float b1, float b2,
 			float b3, float c1, float c2, float c3) {
 		this.a1 = a1;
@@ -213,7 +222,32 @@ public class Matrix {
 	
 	@Override
 	public String toString() {
-		return "[ (" + a1 + "," + a2 + "," + a3 + ") (" + b1 + "," + b2 + ","
-				+ b3 + ") (" + c1 + "," + c2 + "," + c3 + ") ]";
+		//return "[ (" + a1 + "," + a2 + "," + a3 + ") (" + b1 + "," + b2 + ","
+		//		+ b3 + ") (" + c1 + "," + c2 + "," + c3 + ") ]";
+
+		String[] array = new String[] {
+			String.format("%.1f", a1),
+			String.format("%.1f", a2),
+			String.format("%.1f", a3),
+			String.format("%.1f", b1),
+			String.format("%.1f", b2),
+			String.format("%.1f", b3),
+			String.format("%.1f", c1),
+			String.format("%.1f", c2),
+			String.format("%.1f", c3)
+		};
+	
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < array.length; i++) {
+			sb.append(array[i]);
+			if ((i + 1) % 3 == 0) {
+				sb.append("\n");
+			} else {
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
+		//return "[ (" + a1 + "," + a2 + "," + a3 + ") (" + b1 + "," + b2 + "," + b3 + ") (" + c1 + "," + c2 + "," + c3 + ") ]";
 	}
 }
