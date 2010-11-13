@@ -2,4 +2,7 @@
 <resources>
     <string name="hello">Hello World, VirtualArt!</string>
     <string name="app_name">VirtualArt</string>
+    <string name="browser">Browser</string>
+    <string name="login">Login</string>
+    <string name="paint">Paint</string>
 </resources>
