@@ -36,7 +36,7 @@ public class PaintActivity extends Activity {
         
 //        mGLSurfaceView.setRenderer(new CubeRenderer(true));
 //        mGLSurfaceView.setRenderer(new ImageRenderer(this, true));
-        mGLSurfaceView.setRenderer(new StaticTriangleRenderer(this));
+        mGLSurfaceView.setRenderer(new ImageRenderer(this));
         
         // Use a surface format with an Alpha channel:
         mGLSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
