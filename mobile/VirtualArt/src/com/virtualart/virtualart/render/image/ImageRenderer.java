@@ -111,6 +111,7 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
             }
         }
 
+        //THE BIG CALL!
         GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
         bitmap.recycle();
     }
@@ -142,7 +143,7 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        GLU.gluLookAt(gl, 0, 0, -5, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        //GLU.gluLookAt(gl, 0, 0, -5, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);

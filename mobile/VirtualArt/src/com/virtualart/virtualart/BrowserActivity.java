@@ -8,22 +8,40 @@ import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup.LayoutParams;
 
-import com.virtualart.virtualart.render.image.*;
+import com.virtualart.virtualart.model.ArtItem;
+import com.virtualart.virtualart.model.ArtModel;
+import com.virtualart.virtualart.model.ArtModel.ArtModelListener;
+import com.virtualart.virtualart.render.image.ImageRenderer;
 
 /**
  * The graffiti/fingerpainting activity.
  */
-public class BrowserActivity extends Activity {
+public class BrowserActivity extends Activity implements ArtModelListener {
     private GLSurfaceView mGLSurfaceView;
     private Preview mPreview; 
+    private ImageRenderer mRenderer;
+
+    private ArtModel mModel;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ////////////////////////////////////////
+        // MODEL
+        ////////////////////////////////////////
+
+        mModel = new ArtModel(this);
+        mModel.addListener(this);
+
+        ////////////////////////////////////////
+        // OPEN GL
+        ////////////////////////////////////////
 
         // Create our Preview view and set it as the content of our
         // Activity
@@ -34,9 +52,8 @@ public class BrowserActivity extends Activity {
         // And we want a depth buffer.
         mGLSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         
-//        mGLSurfaceView.setRenderer(new CubeRenderer(true));
-//        mGLSurfaceView.setRenderer(new ImageRenderer(this, true));
-        mGLSurfaceView.setRenderer(new ImageRenderer(this));
+        mRenderer = new ImageRenderer(this);
+        mGLSurfaceView.setRenderer(mRenderer);
         
         // Use a surface format with an Alpha channel:
         mGLSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -47,6 +64,30 @@ public class BrowserActivity extends Activity {
         mPreview = new Preview(this); 
         addContentView(mPreview, new LayoutParams(LayoutParams.WRAP_CONTENT, 
         LayoutParams.WRAP_CONTENT)); 
+    }
+        
+    ////////////////////////////////////////
+    // NOTIFICATIONS
+    ////////////////////////////////////////
+        
+    public void artModelAddedItem(ArtModel model, ArtItem item) {
+        //Need to add item to scene graph
+
+    }
+    
+    public void artModelClearedItems(ArtModel model) {
+        //Need to clear scene graph
+
+    }
+
+    public void artModelUpdatedPosition(ArtModel model) {
+        //Need to render frame with new rotation matrix
+        Log.v("BrowserActivity", "artModelUpdatedPosition");
+
+        model.getRotationMatrix();
+
+        //Pass rotation matrix into imageRenderer
+        
     }
 
     @Override
@@ -100,6 +141,7 @@ public class BrowserActivity extends Activity {
     	      // the preview. 
     	      Camera.Parameters parameters = mCamera.getParameters(); 
     	      parameters.setPreviewSize(w, h); 
+    	      //parameters.setPreviewSize(320, 240);
     	      mCamera.setParameters(parameters); 
     	      mCamera.startPreview(); 
     	  } 

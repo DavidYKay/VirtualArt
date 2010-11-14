@@ -3,10 +3,12 @@ package com.virtualart.virtualart.model;
 import java.util.ArrayList;
 import java.util.EventListener;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.virtualart.virtualart.model.UpdateManager.UpdateManagerListener;
 import com.virtualart.virtualart.util.EventListenerList;
+import com.virtualart.virtualart.util.SensorHelper;
 
 /**
  * Responsible for maintaining the local set of art
@@ -16,6 +18,7 @@ public class ArtModel implements UpdateManagerListener {
     public interface ArtModelListener extends EventListener {
         public void artModelAddedItem(ArtModel model, ArtItem item);
         public void artModelClearedItems(ArtModel model);
+        public void artModelUpdatedPosition(ArtModel model);
     }
 
     public enum Action {
@@ -23,16 +26,34 @@ public class ArtModel implements UpdateManagerListener {
         CLEAR
     }
 
+    //HELPERS 
     private UpdateManager updateManager = new UpdateManager(this);
+    private SensorHelper sensorHelper;
 
+    //STATE VARIABLES
 	private ArrayList<ArtItem> artItems = new ArrayList<ArtItem>();
 	private Location currentLocation;
+	private float[] rotationMatrix;
+	private Context context;
+
+    /**
+     * 
+     */
+    public ArtModel(Context context) {
+    	this.context = context;
+    	sensorHelper = new SensorHelper(context);
+        //Register for sensor updates
+        //sensorManager.
+    }
 	
 	public ArrayList<ArtItem> getArtItems() {
 		return artItems;
 	}
 	public Location getCurrentLocation() {
 		return currentLocation;
+	}
+	public float[] getRotationMatrix() {
+		return sensorHelper.getRotationMatrix();
 	}
 
     public void addItem(ArtItem item) {
@@ -83,6 +104,12 @@ public class ArtModel implements UpdateManagerListener {
             listener.artModelClearedItems(this);
         }
     }
+	
+    private void notifyListenersOfPositionUpdate() {
+        for (ArtModelListener listener : mEventListenerList.getListeners(ArtModelListener.class)) {
+            listener.artModelUpdatedPosition(this);
+        }
+    }
 
 	@Override
 	 public void newArtFinishedUpdating(ArrayList<ArtItem> newItems) {
@@ -94,4 +121,5 @@ public class ArtModel implements UpdateManagerListener {
             addItem(newItem);
         }
 	}
+
 }

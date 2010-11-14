@@ -224,7 +224,7 @@ public class PostActivity extends Activity {
 	}
 	
     public void getFileWithRequest() {
-        ArtModel artModel = new ArtModel();
+        ArtModel artModel = new ArtModel(this);
         artModel.getNewArt();
     }
 }
