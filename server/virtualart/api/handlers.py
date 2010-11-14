@@ -1,6 +1,9 @@
 from piston.handler import BaseHandler
 from virtualart.models import *
 from emitters import *
+import traceback
+import random
+
 
 class ArtHandler(BaseHandler):
     allowed_methods = ('GET', 'POST', 'DELETE', 'PUT')
@@ -17,19 +20,28 @@ class ArtHandler(BaseHandler):
             return [x.get_data(host) for x in Art.objects.all()]
 
     def create(self, request, *args, **kwds):
-        host = request.get_host()
-        fields = {
-            'name': request.POST['name'],
-            'latitude': float(request.POST['latitude']),
-            'longitude': float(request.POST['latitude']),
-            'elevation': float(request.POST['elevation']),
-            'direction': float(request.POST['direction']),
-            'pitch': float(request.POST['pitch']),
-            'image': request.FILES['image'],
-        }
-        art = Art(**fields)
-        art.save()
-        return [art.get_data(host)]
+        try:    
+            print request.POST
+            print request.FILES
+            print request.FILES.items()
+            host = request.get_host()
+            fields = {
+                'name': request.POST['name'],
+                'latitude': float(request.POST['latitude']),
+                'longitude': float(request.POST['longitude']),
+                'elevation': float(request.POST['elevation']),
+                'direction': float(request.POST['direction']),
+                'pitch': float(request.POST['pitch']),
+            }
+            fname,ext = request.FILES['image']._get_name().split('.')
+            request.FILES['image']._set_name(str(random.getrandbits(32)) + "." + ext)
+            fields['image'] = request.FILES['image']
+            art = Art(**fields)
+            art.save()
+            return [art.get_data(host)]
+        except:
+            return traceback.format_exc()
+
 
 class GeoArtHandler(BaseHandler):
     model = Art
