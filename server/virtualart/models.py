@@ -19,3 +19,15 @@ class Art(models.Model):
 
     def __unicode__(self):
         return "<Art: %s>" % self.name
+
+    def get_data(self, host=""):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "image": host + self.image.url,
+            "longitude": self.longitude,
+            "latitude": self.latitude,
+            "direction": self.direction,
+            "pitch": self.pitch,
+            "elevation": self.elevation,            
+        }
