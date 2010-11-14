@@ -42,7 +42,8 @@ class ArtHandler(BaseHandler):
             else:
                 art = Art(**fields)
                 art.save()
-            return [art.get_data(host)]
+            #return [art.get_data(host)]
+            return "<textarea>test</textarea>" 
         except:
             return traceback.format_exc()
 
