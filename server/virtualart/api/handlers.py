@@ -16,6 +16,20 @@ class ArtHandler(BaseHandler):
         else:
             return [x.get_data(host) for x in Art.objects.all()]
 
+    def create(self, request, *args, **kwds):
+        host = request.get_host()
+        fields = {
+            'name': request.POST['name'],
+            'latitude': float(request.POST['latitude']),
+            'longitude': float(request.POST['latitude']),
+            'elevation': float(request.POST['elevation']),
+            'direction': float(request.POST['direction']),
+            'pitch': float(request.POST['pitch']),
+            'image': request.FILES['image'],
+        }
+        art = Art(**fields)
+        art.save()
+        return [art.get_data(host)]
 
 class GeoArtHandler(BaseHandler):
     model = Art
