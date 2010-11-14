@@ -16,9 +16,6 @@
 
 package com.virtualart.virtualart;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -31,12 +28,13 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.virtualart.virtualart.util.FileHelper;
 
 public class PaintActivity extends Activity
         implements ColorPickerDialog.OnColorChangedListener {  
@@ -237,42 +235,10 @@ public class PaintActivity extends Activity
 				//Save current as bitmap
 				//String filename = "/sdcard/mypic.png";
 				String filename = "mypic.png";
-				File extDir = Environment.getExternalStorageDirectory();
-				File file = new File(
-					extDir,
+				FileHelper.saveBitmapWithFilename(
+					myView.getBitmapCopy(),
 					filename
 				);
-				if (file.exists()) {
-					file.delete();
-				}
-
-				FileOutputStream out = null;
-				try {
-					//if (file.createNewFile()) {
-					if (true) {
-						//out = openFileOutput(
-						//	filename, 
-						//	Context.MODE_PRIVATE
-						//);
-						out = new FileOutputStream(file.getPath());
-						boolean result = myView.getBitmapCopy().compress(Bitmap.CompressFormat.PNG, 90, out);
-						if (result) {
-							Log.v("Save", "Success");
-						} else {
-							Log.v("Save", "Fail");
-						}
-
-					} else {
-						Log.v (
-								"Save",
-								"couldn't create file at: " + file.getAbsolutePath()
-						);
-					}
-					out.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				} 
-				//Prepare for upload
 
                 return true;
         }

@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.graphics.drawable.Drawable;
 
 import com.virtualart.virtualart.model.ArtItem.APIConstants;
+import com.virtualart.virtualart.util.FileHelper;
 import com.virtualart.virtualart.util.RestClient;
 import com.wilson.android.library.DrawableManager;
 
@@ -23,10 +24,17 @@ public class UpdateManager {
     //    this.updateManagerListener = updateManagerListener;
     //}
 
+    private DrawableManager drawableManager = new DrawableManager();
+	
+	//Ugly. This should be removed
     private ArtModel artModel;
     public UpdateManager(ArtModel artModel) {
         this.artModel = artModel;
     }
+
+	public DrawableManager getDrawableManager() {
+		return drawableManager;
+	}
 
 	/**
 	 * Dial up the foreign API, ask for new stuff
@@ -56,19 +64,30 @@ public class UpdateManager {
 
                 //Fetch drawable
 				String imageName = object.getString(APIConstants.Image);
+				String name = object.getString(APIConstants.Name);
+				double lat = object.getDouble(APIConstants.Latitude);
+				double lng = object.getDouble(APIConstants.Longitude);
+				int elevation = ELEVATION;
+				int artId = object.getInt(APIConstants.Longitude);
 
                 Drawable drawable = drawableManager.fetchDrawable(imageName);
-                
+
+				//Save to disk
+				FileHelper.saveDrawableById(
+					drawable,
+					artId
+				);
+
+				//Save to model
                 artModel.addItem(
                     new ArtItem(
-                        object.getString(APIConstants.Name),
+                        name,
                         drawable,
-                        object.getDouble(APIConstants.Latitude),
-                        object.getDouble(APIConstants.Longitude),
-                        ELEVATION
+                        lat,
+                        lng,
+                        elevation
                     )
                 );
-                //Save the item to disk?
 			} catch (Exception e) {
 				
 			}
@@ -79,7 +98,7 @@ public class UpdateManager {
 		//Fire an event when we're done
 	}
 
-    /**
+	/**
      * One background item finished retrieving
      */
     public void backgroundFetchFinished() {
