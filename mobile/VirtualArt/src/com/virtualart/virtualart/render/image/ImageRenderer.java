@@ -35,7 +35,6 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.GLUtils;
-import android.os.SystemClock;
 
 /**
  * Renders a block with a textured image.
@@ -43,12 +42,11 @@ import android.os.SystemClock;
 public class ImageRenderer implements GLSurfaceView.Renderer {
 
     private Context mContext;
-    private Triangle mTriangle;
     private Square mSquare;
     private int mTextureID;
     
     
-    public ImageRenderer(Context context, int bitmapID) {
+    public ImageRenderer(Context context) {
         mContext = context;
         mSquare = new Square();
     }
@@ -68,25 +66,28 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         glHint(GL_PERSPECTIVE_CORRECTION_HINT,
                 GL_FASTEST);
 
-        glClearColor(0,0,0,0);
+        glClearColor(0,0,0,0);	  // set the background color to clear so we can see the camera view
         glShadeModel(GL_SMOOTH);
         glEnable(GL_DEPTH_TEST);  // does depth comparisons and updates the buffer
         glEnable(GL_TEXTURE_2D);  // enables 2D texture
+        glEnable(GL_BLEND);		  // enables blending
+        
+        //TODO: specify a blending function
+//        glBlendFunc();
 
         /*
          * Create our texture. This has to be done each time the
          * surface is created.
          */
         int[] textures = new int[1];
-        glGenTextures(1, textures, 0); // generates texture names
+        glGenTextures(1, textures, 0); 							// generates texture names
 
-        mTextureID = textures[0];
+        mTextureID = textures[0];								// gets the texture name
         glBindTexture(GL_TEXTURE_2D, mTextureID);
 
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                GL_NEAREST);
-        glTexParameterf(GL_TEXTURE_2D,
-                GL_TEXTURE_MAG_FILTER,
+                GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
                 GL_LINEAR);
 
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
@@ -153,14 +154,15 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         glTexParameterx(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                 GL_REPEAT);
 
-        long time = SystemClock.uptimeMillis() % 4000L;
+//        long time = SystemClock.uptimeMillis() % 4000L;
 //        float angle = 0.090f * ((int) time);
 
 //        glRotatef(angle, 0, 0, 1.0f);
 
-//        mTriangle.draw(gl);
         mSquare.draw(gl);
         
+        // To avoid messing up the rendering of multiple objects, disable GL_VERTEX_ARRAY
+        glDisableClientState(GL_VERTEX_ARRAY);
     }
 
     public void onSurfaceChanged(GL10 gl, int w, int h) {
@@ -177,75 +179,7 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         glLoadIdentity();
         glFrustumf(-ratio, ratio, -1, 1, 3, 7);
     }
-
-    static class Triangle {
-        public Triangle() {
-
-            // Buffers to be passed to gl*Pointer() functions
-            // must be direct, i.e., they must be placed on the
-            // native heap where the garbage collector cannot
-            // move them.
-            //
-            // Buffers with multi-byte datatypes (e.g., short, int, float)
-            // must have their byte order set to native order
-
-            ByteBuffer vbb = ByteBuffer.allocateDirect(VERTS * 3 * 4);
-            vbb.order(ByteOrder.nativeOrder());
-            mFVertexBuffer = vbb.asFloatBuffer();
-
-            ByteBuffer tbb = ByteBuffer.allocateDirect(VERTS * 2 * 4);
-            tbb.order(ByteOrder.nativeOrder());
-            mTexBuffer = tbb.asFloatBuffer();
-
-            ByteBuffer ibb = ByteBuffer.allocateDirect(VERTS * 2);
-            ibb.order(ByteOrder.nativeOrder());
-            mIndexBuffer = ibb.asShortBuffer();
-
-            // A unit-sided equilateral triangle centered on the origin.
-            float[] coords = {
-                    // X, Y, Z
-                    -0.5f, -0.25f, 0,
-                     0.5f, -0.25f, 0,
-                     0.0f,  0.559016994f, 0
-            };
-
-            for (int i = 0; i < VERTS; i++) {
-                for(int j = 0; j < 3; j++) {
-                	
-                    mFVertexBuffer.put(coords[i*3+j] * 2.0f);
-                }
-            }
-
-            for (int i = 0; i < VERTS; i++) {
-                for(int j = 0; j < 2; j++) {
-                    mTexBuffer.put(coords[i*3+j] * 2.0f + 0.5f);
-                }
-            }
-
-            for(int i = 0; i < VERTS; i++) {
-                mIndexBuffer.put((short) i);
-            }
-
-            mFVertexBuffer.position(0);
-            mTexBuffer.position(0);
-            mIndexBuffer.position(0);
-        }
-
-        public void draw(GL10 gl) {
-            glFrontFace(GL_CCW);
-            glVertexPointer(3, GL_FLOAT, 0, mFVertexBuffer);
-            glEnable(GL_TEXTURE_2D);
-            glTexCoordPointer(2, GL_FLOAT, 0, mTexBuffer);
-            glDrawElements(GL_TRIANGLE_STRIP, VERTS,
-                    GL_UNSIGNED_SHORT, mIndexBuffer);
-        }
-
-        private final static int VERTS = 3;
-
-        private FloatBuffer mFVertexBuffer;
-        private FloatBuffer mTexBuffer;
-        private ShortBuffer mIndexBuffer;
-    }
+   
     
     static class Square {
 
@@ -256,10 +190,10 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         private ShortBuffer mIndexBuffer;
         
         private float[] coords = {
-        		-0.5f, -0.5f, 0f, // (x1, y1, z1)
-    	        0.5f, -0.5f, 0f, // (x2, y2, z2)
-    	        0.5f, 0.5f, 0f, // (x3, y3, z3)
-    	        -0.5f, 0.5f, 0f // (x4, y4, z4)
+        		-0.75f, -0.75f, 0f, // (x1, y1, z1)
+        		0.75f, -0.75f, 0f, // (x2, y2, z2)
+        		0.75f, 0.75f, 0f, // (x3, y3, z3)
+    	        -0.75f, 0.75f, 0f // (x4, y4, z4)
         };
         
         private int[] indices = {0, 1, 2, 0, 2, 3};
