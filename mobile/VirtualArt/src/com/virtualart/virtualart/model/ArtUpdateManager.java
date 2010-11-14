@@ -71,9 +71,13 @@ public class ArtUpdateManager extends FetchManager {
 				double lat = object.getDouble(APIConstants.Latitude);
 				double lng = object.getDouble(APIConstants.Longitude);
 				int elevation = ELEVATION;
-				int artId = object.getInt(APIConstants.Longitude);
+				int artId = object.getInt(APIConstants.Id);
 
                 Drawable drawable = drawableManager.fetchDrawable(imageName);
+                Log.v(
+                    "Update", 
+                    "id: " + artId
+                );
 
 				//Save to disk
 				FileHelper.saveDrawableById(
@@ -82,17 +86,15 @@ public class ArtUpdateManager extends FetchManager {
 				);
 
 				//Save to model
-				newItems.add(
-                    new ArtItem(
-                        name,
-                        drawable,
-                        lat,
-                        lng,
-                        elevation
-                    )
-				);
-                //artModel.addItem(
-                //);
+				//newItems.add(
+                //    new ArtItem(
+                //        name,
+                //        drawable,
+                //        lat,
+                //        lng,
+                //        elevation
+                //    )
+				//);
 			} catch (Exception e) {
 				
 			}
@@ -101,9 +103,7 @@ public class ArtUpdateManager extends FetchManager {
 		//For each item, fire up a fetchDrawable on a background thread
 
 		//Fire an event when we're done
-		notifyListeners(
-			newItems
-		);
+		//notifyListeners(newItems);
 	}
 
     public Bitmap fetchBitmap(String urlString) {

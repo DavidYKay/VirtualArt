@@ -16,6 +16,7 @@ public class ArtItem {
 		public static final String Longitude = "longitude";
 		public static final String Elevation = "elevation";
 		public static final String Image     = "image";
+		public static final String Id = "id";
 	}
 	
 //	/**

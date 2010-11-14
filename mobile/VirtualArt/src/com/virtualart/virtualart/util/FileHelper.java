@@ -13,7 +13,7 @@ public class FileHelper {
 
 	public static String getDrawableFilename(int artId) {
 		return String.format(
-			"art-%d",
+			"artmented-%d.png",
 			artId
 		);
 	}
@@ -26,6 +26,7 @@ public class FileHelper {
 	}
 	
 	public static boolean saveDrawableWithFilename(Drawable drawable, String filename) {
+
 		boolean result = false;
 		
 		//Convert drawable to bitmap
@@ -44,9 +45,9 @@ public class FileHelper {
 	
 		File extDir = Environment.getExternalStorageDirectory();
 		File file = new File(
-				extDir,
-				filename
-				);
+            extDir,
+            filename
+        );
 		if (file.exists()) {
 			file.delete();
 		}
@@ -74,7 +75,7 @@ public class FileHelper {
 		} 
 	
 		if (result) {
-			Log.v("Save", "Success");
+			Log.v("Save", "Success: " + file.getPath());
 		} else {
 			Log.v("Save", "Fail");
 		}
