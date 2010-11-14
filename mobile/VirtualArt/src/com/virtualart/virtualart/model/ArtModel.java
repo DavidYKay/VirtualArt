@@ -1,20 +1,30 @@
 package com.virtualart.virtualart.model;
 
 import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.EventListener;
 
 import android.location.Location;
 
-import com.virtualart.virtualart.model.ArtItem.APIConstants;
-import com.virtualart.virtualart.util.RestClient;
+import com.virtualart.virtualart.model.UpdateManager.UpdateManagerListener;
+import com.virtualart.virtualart.util.EventListenerList;
 
 /**
  * Responsible for maintaining the local set of art
  *
  */
-public class ArtModel {
+public class ArtModel implements UpdateManagerListener {
+    public interface ArtModelListener extends EventListener {
+        public void artModelAddedItem(ArtModel model, ArtItem item);
+        public void artModelClearedItems(ArtModel model);
+    }
+
+    public enum Action {
+        ADD,
+        CLEAR
+    }
+
+    private UpdateManager updateManager = new UpdateManager(this);
+
 	private ArrayList<ArtItem> artItems = new ArrayList<ArtItem>();
 	private Location currentLocation;
 	
@@ -25,51 +35,63 @@ public class ArtModel {
 		return currentLocation;
 	}
 
-	/**
-	 * Called when it's time to migrate to the new art
-	 */
-	public void newArtFinishedUpdating() {
-		
-	}
-	
+    public void addItem(ArtItem item) {
+    	artItems.add(item);
+        notifyListenersOfAdd(item);
+    }
+    
+    public void clearItems() {
+
+        artItems.clear();
+
+        notifyListenersOfClear();
+    }
+
 	/**
 	 * Dial up the foreign API, ask for new stuff
 	 */
-	private void getNewArt() {
+	public void getNewArt() {
 		//Fetch new content descriptor
-		String fetchUrl = "http://davidykay.com:8080/virtualart/art";
-
-		RestClient restClient = new RestClient();
-		JSONArray array = restClient.fetchJson(fetchUrl);
-	
-		for (int i = 0; i < array.length(); i++) {
-			
-			//"direction": 3.0, 
-			//"elevation": 5.0, 
-			//"name": "test", 
-			//"image": "imgs/2010/11/13/hdr_logo.gif", 
-			//"longitude": 1.0, 
-			//"pitch": 4.0, 
-			//"latitude": 2.0
-			try {
-				JSONObject object = array.getJSONObject(i);
-				
-				object.getString(APIConstants.Name);
-				object.getString(APIConstants.Image);
-				object.getDouble(APIConstants.Latitude);
-				object.getDouble(APIConstants.Longitude);
-					
-			} catch (Exception e) {
-				
-			}
-		
-		}
-		
-		//For each item, fire up a fetchDrawable on a background thread
-
+        updateManager.getNewArt();
 		//Fire an event when we're done
 	}
 
+	private EventListenerList mEventListenerList = new EventListenerList();
 
+	public void addListener(ArtModelListener listener) {
+		mEventListenerList.add(
+			ArtModelListener.class,
+			listener
+		);
+	}
+	
+	public void removeListener(ArtModelListener listener) {
+		mEventListenerList.remove(
+			ArtModelListener.class,
+			listener
+		);
+	}
 
+	private void notifyListenersOfAdd(ArtItem newItem) {
+        for (ArtModelListener listener : mEventListenerList.getListeners(ArtModelListener.class)) {
+            listener.artModelAddedItem(this, newItem);
+        }
+    }
+
+	private void notifyListenersOfClear() {
+        for (ArtModelListener listener : mEventListenerList.getListeners(ArtModelListener.class)) {
+            listener.artModelClearedItems(this);
+        }
+    }
+
+	@Override
+	 public void newArtFinishedUpdating(ArrayList<ArtItem> newItems) {
+        //Out with the old
+        clearItems();
+
+        //In with the new
+        for (ArtItem newItem : newItems) {
+            addItem(newItem);
+        }
+	}
 }

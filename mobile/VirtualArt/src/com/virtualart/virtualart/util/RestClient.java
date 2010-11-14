@@ -62,6 +62,37 @@ public class RestClient {
 		return sb.toString();
 	}
 
+    /**
+     * Utility method to parse JSON
+     */
+	public JSONArray jsonArrayFromString(String contentString) {
+		JSONArray valArray = null;
+
+		try {
+			Log.i("REST", contentString);
+
+			// A Simple JSONObject Creation
+			JSONObject json = new JSONObject(contentString);
+			Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
+
+			// A Simple JSONObject Parsing
+			JSONArray nameArray = json.names();
+			valArray  = json.toJSONArray(nameArray);
+			for(int i=0; i<valArray.length(); i++) {
+				Log.i("REST","<jsonname"+i+">\n"+nameArray.getString(i)+"\n</jsonname"+i+">\n"
+						+"<jsonvalue"+i+">\n"+valArray.getString(i)+"\n</jsonvalue"+i+">");
+			}
+
+			// A Simple JSONObject Value Pushing
+			json.put("sample key", "sample value");
+			Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+        return valArray;
+    }
+
 	public String fetchString(String url) {
 		// TODO Grab actual credentials
 		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("unregistered", "abc");
@@ -108,39 +139,13 @@ public class RestClient {
 		return responseString;
 	}
 
-	/* This is a test function which will connects to a given rest service 
-	 * and returns a JSON array decoded from the response.
+	/* 
+	 * Shortcut method for fetching json from a URL
 	 */
 	public JSONArray fetchJson(String url) {
 		String response = fetchString(url);
-
-		JSONArray valArray = null;
-		try {
-			Log.i("REST",response);
-
-			// A Simple JSONObject Creation
-			JSONObject json = new JSONObject(response);
-			Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
-
-			// A Simple JSONObject Parsing
-			JSONArray nameArray = json.names();
-			valArray  = json.toJSONArray(nameArray);
-			for(int i=0; i<valArray.length(); i++) {
-				Log.i("REST","<jsonname"+i+">\n"+nameArray.getString(i)+"\n</jsonname"+i+">\n"
-						+"<jsonvalue"+i+">\n"+valArray.getString(i)+"\n</jsonvalue"+i+">");
-			}
-
-			// A Simple JSONObject Value Pushing
-			json.put("sample key", "sample value");
-			Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
-
-			//return valArray;
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-		return valArray;
+        
+		return jsonArrayFromString(response);
 	}
 
 	/**

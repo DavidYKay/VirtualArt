@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.virtualart.virtualart.model.ArtModel;
 import com.virtualart.virtualart.util.RestClient;
 
 /**
@@ -51,6 +52,14 @@ public class PostActivity extends Activity {
 			public void onClick(View v) {
 				//postFile();
 				postFileWithRequest();
+			}
+		});
+		
+        final Button getButton  = (Button)this.findViewById(R.id.get_button);
+		getButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//getFile();
+				getFileWithRequest();
 			}
 		});
 
@@ -213,4 +222,9 @@ public class PostActivity extends Activity {
 
 		}
 	}
+	
+    public void getFileWithRequest() {
+        ArtModel artModel = new ArtModel();
+        artModel.getNewArt();
+    }
 }

@@ -7,5 +7,4 @@ public class ArtController {
 	private ArtModel artModel;
 
 
-
 }
