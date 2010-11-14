@@ -24,7 +24,7 @@ class ArtHandler(BaseHandler):
             print request.POST
             print request.FILES
             print request.FILES.items()
-            host = request.get_host()
+            host = request.get_host()            
             fields = {
                 'name': request.POST['name'],
                 'latitude': float(request.POST['latitude']),
@@ -36,8 +36,12 @@ class ArtHandler(BaseHandler):
             fname,ext = request.FILES['image']._get_name().split('.')
             request.FILES['image']._set_name(str(random.getrandbits(32)) + "." + ext)
             fields['image'] = request.FILES['image']
-            art = Art(**fields)
-            art.save()
+            if id in request.POST and Art.objects.filter(id=id).exists():
+                art = Art.objects.get(id=id)
+                art.update(**fields)
+            else:
+                art = Art(**fields)
+                art.save()
             return [art.get_data(host)]
         except:
             return traceback.format_exc()
