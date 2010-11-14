@@ -45,8 +45,9 @@ public class MainActivity extends Activity {
         	public void onClick(View v) {
         		Intent myIntent = new Intent(MainActivity.this, CameraActivity.class);
         		MainActivity.this.startActivity(myIntent);
-        	}        	
+        	}
         });
+
 
 		final Button postButton  = (Button)this.findViewById(R.id.post_button);
         postButton.setOnClickListener(new View.OnClickListener() {

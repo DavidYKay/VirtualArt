@@ -26,6 +26,11 @@ import android.opengl.GLSurfaceView;
  */
 
 public class CubeRenderer implements GLSurfaceView.Renderer {
+	
+    private boolean mTranslucentBackground;
+    private Cube mCube;
+    private float mAngle;
+    
     public CubeRenderer(boolean useTranslucentBackground) {
         mTranslucentBackground = useTranslucentBackground;
         mCube = new Cube();
@@ -60,7 +65,7 @@ public class CubeRenderer implements GLSurfaceView.Renderer {
 
         mCube.draw(gl);
 
-        mAngle += 1.2f;
+        mAngle += 3.0f;
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -99,10 +104,7 @@ public class CubeRenderer implements GLSurfaceView.Renderer {
              gl.glClearColor(1,1,1,1);
          }
          gl.glEnable(GL10.GL_CULL_FACE);
-         gl.glShadeModel(GL10.GL_SMOOTH);
+         //gl.glShadeModel(GL10.GL_SMOOTH);
          gl.glEnable(GL10.GL_DEPTH_TEST);
     }
-    private boolean mTranslucentBackground;
-    private Cube mCube;
-    private float mAngle;
 }
