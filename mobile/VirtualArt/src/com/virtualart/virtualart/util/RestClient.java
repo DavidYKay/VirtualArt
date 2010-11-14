@@ -132,7 +132,6 @@ public class RestClient {
         return valArray;
     }
 
-
     /**
      * Trim the result to the first curly brace
      * @param result
