@@ -9,4 +9,6 @@
     <string name="camera">Camera</string>
     <string name="post">Post</string>
     <string name="get">Get</string>
+    <string name="place_photo">Place Photo</string>
+    <string name="post_photo">Post Photo</string>
 </resources>

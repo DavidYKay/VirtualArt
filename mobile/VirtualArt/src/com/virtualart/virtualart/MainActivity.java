@@ -56,5 +56,14 @@ public class MainActivity extends Activity {
         		MainActivity.this.startActivity(myIntent);
         	}        	
         });
+		
+		final Button placePhotoButton  = (Button)this.findViewById(R.id.place_photo_button);
+        placePhotoButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+        		Intent myIntent = new Intent(MainActivity.this, PlacePhotoActivity.class);
+        		MainActivity.this.startActivity(myIntent);
+        	}
+        });
+
     }
 }

@@ -35,6 +35,11 @@
             android:layout_height="wrap_content" 
             android:text="@string/post"
             />
+        <Button android:id="@+id/place_photo_button"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:text="@string/place_photo"
+            />
         <!--
         -->
     </LinearLayout>

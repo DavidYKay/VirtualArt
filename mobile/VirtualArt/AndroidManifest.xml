@@ -33,7 +33,10 @@
             android:label="@string/camera">
         </activity>
         <activity android:name=".PostActivity"
-            android:label="Post">
+            android:label="@string/post">
+        </activity>
+        <activity android:name=".PlacePhotoActivity"
+            android:label="@string/place_photo">
         </activity>
     </application>
 
