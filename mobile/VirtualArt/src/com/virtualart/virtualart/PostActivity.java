@@ -177,9 +177,7 @@ public class PostActivity extends Activity {
 		}
 	}
 
-
 	public void postFileWithRequest() {
-
 		HttpPost post = new HttpPost(urlServer);
 		String contentType = "image/png";
 		//FileInputStream fileInputStream = new FileInputStream(new File(pathToOurFile) );

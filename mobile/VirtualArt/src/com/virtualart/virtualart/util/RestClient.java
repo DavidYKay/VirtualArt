@@ -16,17 +16,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
+
+import com.wilson.android.library.DrawableManager;
 
 /**
  * Class for making JSON calls over REST
  */
 public class RestClient {
 	 
-	private DefaultHttpClient httpClient;
+	private DefaultHttpClient mHttpClient = new DefaultHttpClient();
+	private DrawableManager mDrawableManager = new DrawableManager();
 	
 	public RestClient() {
-		httpClient = new DefaultHttpClient();
 	}
 	
     public static String convertStreamToString(InputStream is) {
@@ -63,7 +66,7 @@ public class RestClient {
       
         // TODO Grab actual credentials
         UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("unregistered", "abc");
-        httpClient.getCredentialsProvider().setCredentials(AuthScope.ANY, credentials);
+        mHttpClient.getCredentialsProvider().setCredentials(AuthScope.ANY, credentials);
  
         // Prepare a request object
         HttpGet httpget = new HttpGet(url);
@@ -74,7 +77,7 @@ public class RestClient {
         
         try {
         	//This is a synchronous call
-            response = httpClient.execute(httpget);
+            response = mHttpClient.execute(httpget);
         	//This is an asynchronous call
 //            response = httpclient.execute(httpget, responseHandler);
             // Examine the response status
@@ -125,7 +128,9 @@ public class RestClient {
         return valArray;
     }
 
-	
+    public Drawable fetchDrawable(String urlString) {
+		return mDrawableManager.fetchDrawable(urlString);
+	}
 
     /**
      * Trim the result to the first curly brace
