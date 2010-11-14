@@ -24,7 +24,7 @@ class Art(models.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "image": host + self.image.url,
+            "image": "http://" + host + self.image.url,
             "longitude": self.longitude,
             "latitude": self.latitude,
             "direction": self.direction,
