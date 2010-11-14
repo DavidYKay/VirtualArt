@@ -1,21 +1,29 @@
 package com.virtualart.virtualart.model;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.EventListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.virtualart.virtualart.model.ArtItem.APIConstants;
+import com.virtualart.virtualart.util.EventListenerList;
 import com.virtualart.virtualart.util.FileHelper;
 import com.virtualart.virtualart.util.RestClient;
 import com.wilson.android.library.DrawableManager;
 
-public class UpdateManager {
+public class ArtUpdateManager extends FetchManager {
     public static final int ELEVATION = 1;
 
-    public interface UpdateManagerListener {
+    public interface UpdateManagerListener extends EventListener {
         public void newArtFinishedUpdating(ArrayList<ArtItem> newItems);
     }
 
@@ -23,18 +31,12 @@ public class UpdateManager {
     //public UpdateManager(UpdateManagerListener updateManagerListener) {
     //    this.updateManagerListener = updateManagerListener;
     //}
-
-    private DrawableManager drawableManager = new DrawableManager();
 	
 	//Ugly. This should be removed
     private ArtModel artModel;
-    public UpdateManager(ArtModel artModel) {
+    public ArtUpdateManager(ArtModel artModel) {
         this.artModel = artModel;
     }
-
-	public DrawableManager getDrawableManager() {
-		return drawableManager;
-	}
 
 	/**
 	 * Dial up the foreign API, ask for new stuff
@@ -47,6 +49,7 @@ public class UpdateManager {
         DrawableManager drawableManager = restClient.getDrawableManager();
 		JSONArray array = restClient.fetchJson(fetchUrl);
 	
+		ArrayList<ArtItem> newItems = new ArrayList<ArtItem>();
         /**
          * Do we want to do this sequentially or parallel?
          */
@@ -79,7 +82,7 @@ public class UpdateManager {
 				);
 
 				//Save to model
-                artModel.addItem(
+				newItems.add(
                     new ArtItem(
                         name,
                         drawable,
@@ -87,7 +90,9 @@ public class UpdateManager {
                         lng,
                         elevation
                     )
-                );
+				);
+                //artModel.addItem(
+                //);
 			} catch (Exception e) {
 				
 			}
@@ -96,7 +101,29 @@ public class UpdateManager {
 		//For each item, fire up a fetchDrawable on a background thread
 
 		//Fire an event when we're done
+		notifyListeners(
+			newItems
+		);
 	}
+
+    public Bitmap fetchBitmap(String urlString) {
+    	Log.d(this.getClass().getSimpleName(), "image url:" + urlString);
+    	try {
+    		InputStream is = fetch(urlString);
+    		//BitmapDrawable drawable = BitmapDrawable.createFromStream(is, "src");
+    		BitmapDrawable drawable = new BitmapDrawable(is);
+    		return drawable.getBitmap();
+    	} catch (MalformedURLException e) {
+    		Log.e(this.getClass().getSimpleName(), "fetchBitmap failed", e);
+    		return null;
+    	} catch (IOException e) {
+    		Log.e(this.getClass().getSimpleName(), "fetchBitmap failed", e);
+    		return null;
+    	} catch (NullPointerException e) {
+    		Log.e(this.getClass().getSimpleName(), "Null image. Bad url?", e);
+    		return null;
+    	}    	
+    }
 
 	/**
      * One background item finished retrieving
@@ -123,5 +150,26 @@ public class UpdateManager {
     //    //When we get the drawable back
 	//	return null;
 	//}
+	
+	private EventListenerList mEventListenerList = new EventListenerList();
 
+	public void addListener(UpdateManagerListener listener) {
+		mEventListenerList.add(
+			UpdateManagerListener.class,
+			listener
+		);
+	}
+	
+	public void removeListener(UpdateManagerListener listener) {
+		mEventListenerList.remove(
+			UpdateManagerListener.class,
+			listener
+		);
+	}
+
+	private void notifyListeners( ArrayList<ArtItem> newItems) {
+        for (UpdateManagerListener listener : mEventListenerList.getListeners(UpdateManagerListener.class)) {
+            listener.newArtFinishedUpdating(newItems);
+        }
+    }
 }

@@ -61,31 +61,41 @@ public class RestClient {
 		}
 		return sb.toString();
 	}
+	
+    public JSONObject jsonObjectFromString(String contentString) {
+        JSONObject json = null;
+		try {
+            json = new JSONObject(contentString);
+            Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+        return json;
+    }
 
     /**
      * Utility method to parse JSON
      */
 	public JSONArray jsonArrayFromString(String contentString) {
 		JSONArray valArray = null;
-
 		try {
-			Log.i("REST", contentString);
+            valArray = new JSONArray(contentString);
+            Log.i("REST","<jsonArray>\n"+valArray.toString()+"\n</jsonArray>");
+			//Log.i("REST", contentString);
 
-			// A Simple JSONObject Creation
-			JSONObject json = new JSONObject(contentString);
-			Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
+			//// A Simple JSONObject Creation
 
-			// A Simple JSONObject Parsing
-			JSONArray nameArray = json.names();
-			valArray  = json.toJSONArray(nameArray);
-			for(int i=0; i<valArray.length(); i++) {
-				Log.i("REST","<jsonname"+i+">\n"+nameArray.getString(i)+"\n</jsonname"+i+">\n"
-						+"<jsonvalue"+i+">\n"+valArray.getString(i)+"\n</jsonvalue"+i+">");
-			}
+			//// A Simple JSONObject Parsing
+			//JSONArray nameArray = json.names();
+			//valArray  = json.toJSONArray(nameArray);
+			//for(int i=0; i<valArray.length(); i++) {
+			//	Log.i("REST","<jsonname"+i+">\n"+nameArray.getString(i)+"\n</jsonname"+i+">\n"
+			//			+"<jsonvalue"+i+">\n"+valArray.getString(i)+"\n</jsonvalue"+i+">");
+			//}
 
-			// A Simple JSONObject Value Pushing
-			json.put("sample key", "sample value");
-			Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
+			//// A Simple JSONObject Value Pushing
+			//json.put("sample key", "sample value");
+			//Log.i("REST","<jsonobject>\n"+json.toString()+"\n</jsonobject>");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

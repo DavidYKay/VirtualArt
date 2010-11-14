@@ -47,7 +47,7 @@ public class ArtItem {
 	
 	public ArtItem(String name, String imageUrl, double latitude, double longitude, double elevation) {
 		super();
-		DrawableManager dManager = ArtSingleton.getInstance().getUpdateManager().getDrawableManager();
+		DrawableManager dManager = ArtSingleton.getInstance().getDrawableManager();
 		this.name = name;
 		this.image = dManager.fetchDrawable(imageUrl);
 		this.longitude = latitude;

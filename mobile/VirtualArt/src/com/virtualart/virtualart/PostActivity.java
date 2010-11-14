@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.virtualart.virtualart.model.ArtModel;
+import com.virtualart.virtualart.model.ArtSingleton;
 import com.virtualart.virtualart.util.RestClient;
 
 /**
@@ -224,7 +225,8 @@ public class PostActivity extends Activity {
 	}
 	
     public void getFileWithRequest() {
-        ArtModel artModel = new ArtModel(this);
-        artModel.getNewArt();
+    	ArtSingleton.initSingleton(this);
+		ArtModel model = ArtSingleton.getInstance().getArtModel();
+		model.getNewArt();
     }
 }

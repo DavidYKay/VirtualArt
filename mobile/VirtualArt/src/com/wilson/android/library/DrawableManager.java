@@ -34,7 +34,9 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
-public class DrawableManager {
+import com.virtualart.virtualart.model.FetchManager;
+
+public class DrawableManager extends FetchManager {
 	public interface DrawableManagerListener {
 		public void setFetchedDrawable(Drawable drawable);
 	}
@@ -44,7 +46,7 @@ public class DrawableManager {
     public DrawableManager() {
     	drawableMap = new HashMap<String, Drawable>();
     }
-
+    
     public Drawable fetchDrawable(String urlString) {
     	if (drawableMap.containsKey(urlString)) {
     		return drawableMap.get(urlString);
@@ -118,12 +120,4 @@ public class DrawableManager {
     	};
     	thread.start();
 	}
-
-    private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-    	DefaultHttpClient httpClient = new DefaultHttpClient();
-    	HttpGet request = new HttpGet(urlString);
-    	HttpResponse response = httpClient.execute(request);
-    	return response.getEntity().getContent();
-    }
-
 }

@@ -37,6 +37,8 @@ public class BrowserActivity extends Activity implements ArtModelListener {
         // MODEL
         ////////////////////////////////////////
 
+        //We need to init it first. Ugly, I know
+        ArtSingleton.initSingleton(this);
         ArtSingleton singleton = ArtSingleton.getInstance();
         mModel = singleton.getArtModel();
         mModel.addListener(this);
