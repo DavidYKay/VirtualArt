@@ -26,7 +26,7 @@ public class Matrix {
 	public Matrix() {
 		//Empty
 	}
-
+	
 	public Matrix(float a1, float a2, float a3, float b1, float b2,
 			float b3, float c1, float c2, float c3) {
 		this.set(a1, a2, a3, b1, b2, b3, c1, c2, c3);
