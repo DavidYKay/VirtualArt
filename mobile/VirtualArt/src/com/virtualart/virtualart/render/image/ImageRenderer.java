@@ -16,7 +16,62 @@
 
 package com.virtualart.virtualart.render.image;
 
-import static android.opengl.GLES10.*;
+import static android.opengl.GLES10.GL_BLEND;
+import static android.opengl.GLES10.GL_CCW;
+import static android.opengl.GLES10.GL_CLAMP_TO_EDGE;
+import static android.opengl.GLES10.GL_COLOR_BUFFER_BIT;
+import static android.opengl.GLES10.GL_DEPTH_BUFFER_BIT;
+import static android.opengl.GLES10.GL_DEPTH_TEST;
+import static android.opengl.GLES10.GL_DITHER;
+import static android.opengl.GLES10.GL_FASTEST;
+import static android.opengl.GLES10.GL_FLOAT;
+import static android.opengl.GLES10.GL_LINEAR;
+import static android.opengl.GLES10.GL_MODELVIEW;
+import static android.opengl.GLES10.GL_MODULATE;
+import static android.opengl.GLES10.GL_ONE_MINUS_SRC_ALPHA;
+import static android.opengl.GLES10.GL_PERSPECTIVE_CORRECTION_HINT;
+import static android.opengl.GLES10.GL_PROJECTION;
+import static android.opengl.GLES10.GL_REPEAT;
+import static android.opengl.GLES10.GL_REPLACE;
+import static android.opengl.GLES10.GL_SMOOTH;
+import static android.opengl.GLES10.GL_SRC_ALPHA;
+import static android.opengl.GLES10.GL_TEXTURE0;
+import static android.opengl.GLES10.GL_TEXTURE_2D;
+import static android.opengl.GLES10.GL_TEXTURE_COORD_ARRAY;
+import static android.opengl.GLES10.GL_TEXTURE_ENV;
+import static android.opengl.GLES10.GL_TEXTURE_ENV_MODE;
+import static android.opengl.GLES10.GL_TEXTURE_MAG_FILTER;
+import static android.opengl.GLES10.GL_TEXTURE_MIN_FILTER;
+import static android.opengl.GLES10.GL_TEXTURE_WRAP_S;
+import static android.opengl.GLES10.GL_TEXTURE_WRAP_T;
+import static android.opengl.GLES10.GL_TRIANGLE_STRIP;
+import static android.opengl.GLES10.GL_UNSIGNED_SHORT;
+import static android.opengl.GLES10.GL_VERTEX_ARRAY;
+import static android.opengl.GLES10.glActiveTexture;
+import static android.opengl.GLES10.glBindTexture;
+import static android.opengl.GLES10.glBlendFunc;
+import static android.opengl.GLES10.glClear;
+import static android.opengl.GLES10.glClearColor;
+import static android.opengl.GLES10.glDisable;
+import static android.opengl.GLES10.glDisableClientState;
+import static android.opengl.GLES10.glDrawArrays;
+import static android.opengl.GLES10.glDrawElements;
+import static android.opengl.GLES10.glEnable;
+import static android.opengl.GLES10.glEnableClientState;
+import static android.opengl.GLES10.glFrontFace;
+import static android.opengl.GLES10.glFrustumf;
+import static android.opengl.GLES10.glGenTextures;
+import static android.opengl.GLES10.glHint;
+import static android.opengl.GLES10.glLoadIdentity;
+import static android.opengl.GLES10.glMatrixMode;
+import static android.opengl.GLES10.glShadeModel;
+import static android.opengl.GLES10.glTexCoordPointer;
+import static android.opengl.GLES10.glTexEnvf;
+import static android.opengl.GLES10.glTexEnvx;
+import static android.opengl.GLES10.glTexParameterf;
+import static android.opengl.GLES10.glTexParameterx;
+import static android.opengl.GLES10.glVertexPointer;
+import static android.opengl.GLES10.glViewport;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,8 +170,71 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
         bitmap.recycle();
     }
-
+    
     public void onDrawFrame(GL10 gl) {
+        newOnDrawFrame(gl);
+    }
+
+    /**
+     * Based on Ben Newhouse's AR Slides
+     */
+    public void newOnDrawFrame(GL10 gl) {
+        float triangleArray[] = {
+            1.0f  , -1.0f , -3.0f , 
+            -1.0f , -1.0f , -3.0f , 
+            1.0f  , 1.0f  , -3.0f , 
+            -1.0f , 1.0f  , -3.0f
+        };
+
+        float coordinatesArray[] = {  
+            1,1,  
+            0,1,  
+            1,0,  
+            0,0  
+        };
+
+        FloatBuffer triangle = FloatBuffer.wrap(
+            triangleArray,
+            0,
+            triangleArray.length - 1
+        );
+
+        FloatBuffer coordinates = FloatBuffer.wrap(
+            coordinatesArray,
+            0,
+            coordinatesArray.length - 1
+        );
+
+        glTexParameterx(GL_TEXTURE_2D , GL_TEXTURE_MIN_FILTER , GL_LINEAR);
+        glTexParameterx(GL_TEXTURE_2D , GL_TEXTURE_MAG_FILTER , GL_LINEAR);
+        glTexParameterx(GL_TEXTURE_2D , GL_TEXTURE_WRAP_S     , GL_REPEAT);
+        glTexParameterx(GL_TEXTURE_2D , GL_TEXTURE_WRAP_T     , GL_REPEAT);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+
+        //for (int ndx = 0; ndx < 4; ndx++) {
+        for (int ndx = 0; ndx < 1; ndx++) {
+
+            glLoadIdentity();
+            //glMultMatrix(self.orientation);
+
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnable(GL_TEXTURE_2D);
+
+            //glBindTexture(GL_TEXTURE_2D, textures[ndx]);
+            glBindTexture(GL_TEXTURE_2D, mTextureID);
+            glVertexPointer(3, GL_FLOAT, 0, triangle);
+            glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        } 
+    }
+
+    public void oldOnDrawFrame(GL10 gl) {
         /*
          * By default, OpenGL enables features that improve quality
          * but reduce performance. One might want to tweak that
@@ -134,7 +252,6 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
          */
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         
         /*
          * Now we're ready to draw some 3D objects
@@ -143,7 +260,7 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        //GLU.gluLookAt(gl, 0, 0, -5, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        GLU.gluLookAt(gl, 0, 0, -5, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
