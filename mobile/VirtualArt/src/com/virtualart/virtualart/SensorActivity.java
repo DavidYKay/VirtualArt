@@ -71,10 +71,15 @@ public class SensorActivity extends Activity implements SensorHelperListener {
     }
     
     private Matrix createDebugMatrix(float[] rotationMatrix) {
+        //return new Matrix(
+        //    rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
+        //    rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
+        //    rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
+        //);
         return new Matrix(
             rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
-            rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
-            rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
+            rotationMatrix[3], rotationMatrix[5], rotationMatrix[5],
+            rotationMatrix[6], rotationMatrix[7], rotationMatrix[8]
         );
     }
 

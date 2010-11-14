@@ -250,4 +250,12 @@ public class Matrix {
 		return sb.toString();
 		//return "[ (" + a1 + "," + a2 + "," + a3 + ") (" + b1 + "," + b2 + "," + b3 + ") (" + c1 + "," + c2 + "," + c3 + ") ]";
 	}
+
+    public static String matrixToString(float[] matrix) {
+        return new Matrix(
+            matrix[0], matrix[1], matrix[2],
+            matrix[3], matrix[5], matrix[5],
+            matrix[6], matrix[7], matrix[8]
+        ).toString();
+    }
 }

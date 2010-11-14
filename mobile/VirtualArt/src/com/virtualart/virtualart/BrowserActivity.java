@@ -84,10 +84,18 @@ public class BrowserActivity extends Activity implements ArtModelListener {
         //Need to render frame with new rotation matrix
         Log.v("BrowserActivity", "artModelUpdatedPosition");
 
-        model.getRotationMatrix();
+        float[] rotationMatrix = model.getRotationMatrix();
 
+        float[] croppedMatrix = new float[] {
+            rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
+            rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
+            rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
+        };
+
+        mRenderer.setRotationMatrix(
+            croppedMatrix
+        );
         //Pass rotation matrix into imageRenderer
-        
     }
 
     @Override

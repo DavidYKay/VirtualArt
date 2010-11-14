@@ -64,6 +64,7 @@ import static android.opengl.GLES10.glGenTextures;
 import static android.opengl.GLES10.glHint;
 import static android.opengl.GLES10.glLoadIdentity;
 import static android.opengl.GLES10.glMatrixMode;
+import static android.opengl.GLES10.glMultMatrixf;
 import static android.opengl.GLES10.glShadeModel;
 import static android.opengl.GLES10.glTexCoordPointer;
 import static android.opengl.GLES10.glTexEnvf;
@@ -90,16 +91,32 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.GLUtils;
+import android.util.Log;
+
+import com.virtualart.virtualart.render.Matrix;
 
 /**
  * Renders a block with a textured image.
  */
 public class ImageRenderer implements GLSurfaceView.Renderer {
 
-    private Context mContext;
+    private float[] mRotationMatrix = new float[] {
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1
+    };
+
+    public float[] getRotationMatrix() {
+		return mRotationMatrix;
+	}
+
+	public void setRotationMatrix(float[] rotationMatrix) {
+		this.mRotationMatrix = rotationMatrix;
+	}
+
+	private Context mContext;
     private Square mSquare;
     private int mTextureID;
-    
     
     public ImageRenderer(Context context) {
         mContext = context;
@@ -207,11 +224,23 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
 
-        //for (int ndx = 0; ndx < 4; ndx++) {
-        for (int ndx = 0; ndx < 1; ndx++) {
+        for (int ndx = 0; ndx < 4; ndx++) {
+        //for (int ndx = 0; ndx < 1; ndx++) {
 
             glLoadIdentity();
             //glMultMatrix(self.orientation);
+            //glMultMatrixf(mRotationMatrix);
+
+            Log.v("ImageRenderer", 
+                Matrix.matrixToString(mRotationMatrix)
+            );
+            FloatBuffer rotationBuffer =
+            createBufferFromArray(
+                mRotationMatrix
+            );
+            glMultMatrixf(
+                rotationBuffer
+            );
 
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
             glEnableClientState(GL_VERTEX_ARRAY);

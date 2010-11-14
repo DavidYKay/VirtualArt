@@ -46,8 +46,10 @@ public class SensorHelper implements SensorEventListener {
 	}
 
 	public float[] getRotationMatrix() {
-        float[] rotationMatrix    = new float[16];
-        float[] inclinationMatrix = new float[16];
+        //float[] rotationMatrix    = new float[16];
+        //float[] inclinationMatrix = new float[16];
+        float[] rotationMatrix    = new float[9];
+        float[] inclinationMatrix = new float[9];
 
         sMgr.getRotationMatrix(
             rotationMatrix,
@@ -56,14 +58,14 @@ public class SensorHelper implements SensorEventListener {
             mCompassValues
         );
 
-        Matrix matrix = new Matrix(
-            //rotationMatrix[0][0], rotationMatrix[0][1], rotationMatrix[0][2],
-            //rotationMatrix[1][0], rotationMatrix[1][1], rotationMatrix[1][2],
-            //rotationMatrix[2][0], rotationMatrix[2][1], rotationMatrix[2][2],
-            rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
-            rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
-            rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
-        );
+        //Matrix matrix = new Matrix(
+        //    //rotationMatrix[0][0], rotationMatrix[0][1], rotationMatrix[0][2],
+        //    //rotationMatrix[1][0], rotationMatrix[1][1], rotationMatrix[1][2],
+        //    //rotationMatrix[2][0], rotationMatrix[2][1], rotationMatrix[2][2],
+        //    rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
+        //    rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
+        //    rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
+        //);
         return rotationMatrix;
 	}
 
