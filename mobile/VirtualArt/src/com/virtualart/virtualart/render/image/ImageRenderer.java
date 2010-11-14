@@ -231,9 +231,9 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
             //glMultMatrix(self.orientation);
             //glMultMatrixf(mRotationMatrix);
 
-            Log.v("ImageRenderer", 
-                Matrix.matrixToString(mRotationMatrix)
-            );
+            //Log.v("ImageRenderer", 
+            //    Matrix.matrixToString(mRotationMatrix)
+            //);
             FloatBuffer rotationBuffer =
             createBufferFromArray(
                 mRotationMatrix
