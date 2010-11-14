@@ -193,17 +193,9 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
             0,0  
         };
 
-        FloatBuffer triangle = FloatBuffer.wrap(
-            triangleArray,
-            0,
-            triangleArray.length - 1
-        );
+        FloatBuffer triangle = createBufferFromArray(triangleArray);
 
-        FloatBuffer coordinates = FloatBuffer.wrap(
-            coordinatesArray,
-            0,
-            coordinatesArray.length - 1
-        );
+        FloatBuffer coordinates = createBufferFromArray(coordinatesArray);
 
         glTexParameterx(GL_TEXTURE_2D , GL_TEXTURE_MIN_FILTER , GL_LINEAR);
         glTexParameterx(GL_TEXTURE_2D , GL_TEXTURE_MAG_FILTER , GL_LINEAR);
@@ -362,5 +354,13 @@ public class ImageRenderer implements GLSurfaceView.Renderer {
             glDrawElements(GL10.GL_TRIANGLE_STRIP, indices.length,
                     GL_UNSIGNED_SHORT, mIndexBuffer);
         }
+    }
+
+    public FloatBuffer createBufferFromArray(float[] array) {
+        ByteBuffer vbb = ByteBuffer.allocateDirect(
+            array.length * 4
+        );
+        vbb.order(ByteOrder.nativeOrder());
+        return vbb.asFloatBuffer();
     }
 }
