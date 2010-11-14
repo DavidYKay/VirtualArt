@@ -1,6 +1,8 @@
 from django.utils import simplejson
 from django.core.serializers.json import DateTimeAwareJSONEncoder
 from piston.emitters import Emitter
+import simplejson
+
 
 class ExtJSONEmitter(Emitter):  
     def render(self, request):
@@ -12,3 +14,4 @@ class ExtJSONEmitter(Emitter):
         
 Emitter.register('ext-json', ExtJSONEmitter, 'application/json; charset=utf-8')
            
+
