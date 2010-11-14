@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.virtualart.virtualart.render.Matrix;
 import com.virtualart.virtualart.util.SensorHelper;
 import com.virtualart.virtualart.util.SensorHelper.SensorHelperListener;
 
@@ -62,7 +63,19 @@ public class SensorActivity extends Activity implements SensorHelperListener {
         mCompassZView.setText(String.format("%.1f", compassValues[2]));
 
         mPitchView.setText(
-            sensorHelper.getRotationMatrix().toString()
+            //sensorHelper.getRotationMatrix().toString()
+            createDebugMatrix(
+                sensorHelper.getRotationMatrix()
+            ).toString()
         );
     }
+    
+    private Matrix createDebugMatrix(float[] rotationMatrix) {
+        return new Matrix(
+            rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
+            rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
+            rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
+        );
+    }
+
 }
