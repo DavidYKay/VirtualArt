@@ -29,7 +29,7 @@ public class RestClient {
 		httpClient = new DefaultHttpClient();
 	}
 	
-    private String convertStreamToString(InputStream is) {
+    public static String convertStreamToString(InputStream is) {
         /*
          * To convert the InputStream to String we use the BufferedReader.readLine()
          * method. We iterate until the BufferedReader returns null which means
@@ -83,8 +83,6 @@ public class RestClient {
             // Get hold of the response entity
             HttpEntity entity = response.getEntity();
             
-            
-            
             // If the response does not enclose an entity, there is no need
             // to worry about connection release
             if (entity != null) {
@@ -126,6 +124,8 @@ public class RestClient {
         }
         return valArray;
     }
+
+	
 
     /**
      * Trim the result to the first curly brace

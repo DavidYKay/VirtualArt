@@ -40,15 +40,15 @@ import android.os.SystemClock;
 /**
  * Renders a block with a textured image.
  */
-public class ImageRenderer implements GLSurfaceView.Renderer{
+public class ImageRenderer implements GLSurfaceView.Renderer {
 
     private Context mContext;
     private Triangle mTriangle;
     private Square mSquare;
     private int mTextureID;
     
-	
-    public ImageRenderer(Context context) {
+    
+    public ImageRenderer(Context context, int bitmapID) {
         mContext = context;
         mSquare = new Square();
     }
@@ -154,7 +154,7 @@ public class ImageRenderer implements GLSurfaceView.Renderer{
                 GL_REPEAT);
 
         long time = SystemClock.uptimeMillis() % 4000L;
-        float angle = 0.090f * ((int) time);
+//        float angle = 0.090f * ((int) time);
 
 //        glRotatef(angle, 0, 0, 1.0f);
 
