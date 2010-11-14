@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    #(r'^test/', include('virtualart.urls')),
+    (r'test/', include('virtualart.api.urls')),
     (r'^virtualart/', include('virtualart.api.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_DOC_ROOT, 'show_indexes': True}),        

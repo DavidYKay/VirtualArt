@@ -34,3 +34,6 @@ def add_art(request):
     return render_to_response('add.html', {
         'form': form,
     })
+
+def test_upload(request):
+    return render_to_response('virtualart.html', {})

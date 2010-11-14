@@ -33,17 +33,19 @@ class ArtHandler(BaseHandler):
                 'direction': float(request.POST['direction']),
                 'pitch': float(request.POST['pitch']),
             }
-            fname,ext = request.FILES['image']._get_name().split('.')
-            request.FILES['image']._set_name(str(random.getrandbits(32)) + "." + ext)
-            fields['image'] = request.FILES['image']
-            if id in request.POST and Art.objects.filter(id=id).exists():
-                art = Art.objects.get(id=id)
+            if 'image' in request.FILES:
+                fname,ext = request.FILES['image']._get_name().split('.')
+                request.FILES['image']._set_name(str(random.getrandbits(32)) + "." + ext)
+                fields['image'] = request.FILES['image']
+            if id in request.POST and Art.objects.filter(id=request.POST['id']).exists():
+                art = Art.objects.get(id=request.POST['id'])
                 art.update(**fields)
             else:
                 art = Art(**fields)
                 art.save()
-            #return [art.get_data(host)]
-            return "<textarea>test</textarea>" 
+                print "created", art
+            return [art.get_data(host)]
+            #return "<textarea>test</textarea>" 
         except:
             return traceback.format_exc()
 

@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Artmented</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.overtweb.com/virtualart/jquery.form.js"></script>
+
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxEPVsxDdPXi5z1UKylPj9hTOyHHwwwN1jdcuErCApWZfxmOt0hQtX_UQ8vjPwwPotbT4SpJzKK0x8Q"
+        type="text/javascript"></script>
+        
+        
+        
+
+    <script type="text/javascript">
+        //<![CDATA[
+	function streetview(streetaddr){
+        var arrowIcon = new GIcon();
+        arrowIcon.iconSize = new GSize(24, 24);
+        arrowIcon.shadowSize = new GSize(1, 1);
+        arrowIcon.iconAnchor = new GPoint(12, 12);
+        arrowIcon.infoWindowAnchor = new GPoint(0, 0);
+        arrowIcon.image = "http://www.google.com/intl/en_ALL/mapfiles/dir_0.png";
+
+        var map = new GMap2(document.getElementById("map"));
+        //the latitude, longitude, pitch, yaw and zoom might all come from a web service call
+		
+		var geo = new GClientGeocoder(); 
+		
+		        var search = streetaddr
+        geo.getLatLng(search, function (point)
+          { 
+            // ===== If the geocode was successful ======
+            if (point) {
+	
+
+        var latlng = new GLatLng(point.lat(),point.lng());
+        var myPov = { yaw: 176.03773913343627, pitch: -0.13590989423507835 };
+        var svc = new GStreetviewClient();
+        map.setCenter(latlng, 16);
+        map.addControl(new GMapTypeControl());
+        map.addControl(new GLargeMapControl());
+        map.addOverlay(new GStreetviewOverlay());
+        
+        var svp = new GStreetviewPanorama(document.getElementById("panorama"));
+        svp.setLocationAndPOV(latlng, myPov); //this initializes the the street view panorama
+        
+        var arrow = new GMarker(new GLatLng(90, 0), { icon: arrowIcon });
+        map.addOverlay(arrow);
+        arrow.setLatLng(latlng);
+        var lastPoint;
+
+
+        document.getElementById("txtLat").value = latlng.lat();
+        document.getElementById("txtLong").value = latlng.lng();
+
+
+
+
+        //listener reacts to the click event on the map
+        GEvent.addListener(map, "click", function(overlay, point) {
+            if (!overlay) {
+                svp.remove();
+                svp.setLocationAndPOV(point);
+                arrow.setLatLng(point);
+                lastPoint = point;
+                document.getElementById("txtLat").value = point.lat();
+                document.getElementById("txtLong").value = point.lng();
+            }
+        });
+        
+		GEvent.addListener(svp, 'initialized', function(pano) {
+		document.getElementById("txtlat").value = pano.latlng.lat();
+		document.getElementById("txtlong").value = pano.latlng.lng();
+		});
+		
+        //listener reacts to the yawchanged event on the streetview panorama
+        GEvent.addListener(svp, "yawchanged", function(yaw) {
+            var dir = Math.round(yaw / 3) * 3;
+            while (dir >= 120) { dir -= 120; }
+            arrow.setImage("http://www.google.com/intl/en_ALL/mapfiles/dir_" + dir + ".png");
+            document.getElementById("txtYaw").value = yaw;
+        });
+        
+        //listener reacts to pitchchanged even on street view panorama
+        GEvent.addListener(svp, "pitchchanged", function(pitch) {
+            document.getElementById("txtPitch").value = pitch;
+        });
+        
+        //listener reacts to zoomchanged event on streetview panoram
+        GEvent.addListener(svp, "zoomchanged", function(zoom) {
+            document.getElementById("txtZoom").value = zoom;
+        });
+        
+        //listener reacts to initialized event on street view panorama
+        GEvent.addListener(svp, "initialized", function(a) {
+            arrow.setLatLng(a.latlng);
+            map.addOverlay(new GPolyline([lastPoint, a.latlng]));
+            lastPoint = a.latlng;
+        });
+		
+		$('#panoflash2').click();
+		
+		
+            } else {
+              alert('Geocoder could not find "'+search+ '"');
+            }
+          }
+        );
+      }
+
+
+
+        //]]>
+	
+    </script>
+        
+        
+	<style type="text/css">
+    body {
+        margin:0;
+        padding:0;
+    }
+	h2 {
+		margin:0;
+		color: #777777;
+		font-size:26px;
+		
+	}
+	.orange {
+		color:#EF592B;
+	}
+    #wrapper {
+        padding:0px;
+    }
+    #header {
+       margin:0px;
+       padding:4px;
+       background:url("images/gradient.png") repeat-x scroll 0 0 transparent;
+	   height:44px;
+       position:relative;
+    }
+    #logo {	
+        position:absolute;
+        top:0px;
+        left:0px;
+		height:85px;
+        margin:3px 4px;
+    }
+    #main {	
+        width: 960px;
+        margin: auto;
+    }
+    #steps {
+        color:#777777;
+        margin:7px 0 0 0;
+        height:47px;
+    }
+    #steps h2 {
+        float:left;	
+        margin:8px;
+        padding:0px;
+		font-size:26px;
+    }
+	#steps img {
+        float:left;	
+        margin:12px;
+        padding:0px;
+    }
+    #column-left {
+        width:640px;
+    
+        text-align:center;
+        float:left;
+    }
+    #column-right {
+        width:261px;
+        margin-left:5px;
+        margin-right:40px;
+        text-align:left;
+        float:left;
+    }
+    
+    #column-left-inner{
+	   margin-top:0;
+	}
+    #column-right-inner{
+       margin-top:0;
+	   margin-left:20px;
+	   padding:0px;
+    }
+    #photo-wrapper {
+        width:630px;
+        height:700px;
+        margin:auto;	
+    }
+    #photo {
+        width:630px;
+        border:0;
+        margin: auto;
+        margin-bottom:5px;
+    }
+    .thumbnail {
+        background-color: #777777;
+        width:93px;
+        height:67px;
+        float:left;
+        margin:7px;
+    }
+    #thumbnail-left {
+        margin-left:0;
+    }
+    #thumbnail-right {
+        margin-right:0;
+    }
+    #venue-logo {
+        border-bottom: 2px dotted #888888;
+        width:260px;
+		margin-left:-20px;
+    }
+    .deal-info {
+        font-size:14px;
+        width:260px;
+        margin:0 auto;
+		padding:8px 0;
+		border-bottom: 2px dotted #777777;
+    }
+	.deal-info h2 {
+		font-size:24px;	
+	}
+    .menu {
+        width:310px;
+        margin:0 auto;	
+    }
+    .menu-items {
+        text-align:left;
+    }
+	
+	.black_overlay{
+	display: block;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index:1001;
+	-moz-opacity: 0.5;
+	opacity:.80;
+	filter: alpha(opacity=80);
+	
+}
+ 
+
+ #popup1 {
+	 		display: block;
+			position: absolute;
+			top: 25%;
+			left: 25%;
+			width: 50%;
+			height: 50%;
+			padding: 16px;
+			border: 16px solid #e0813c;
+			background-color: white;
+			z-index:1002;
+			overflow: auto;
+			text-align:center;
+ }
+
+ #addr {	 
+ 
+			height:50px;
+			left:100px;
+			margin:18px;
+			position:absolute;
+ 
+		 }
+
+
+ #addArt {	 
+ 
+			height:50px;
+			right:100px;
+			margin:12px;
+			position:absolute;
+			display:none;
+ 
+		 }
+
+	
+    </style>
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	    // bind form using ajaxForm 
+    $('#xmlForm').ajaxForm({ 
+        // dataType identifies the expected content type of the server response 
+        dataType:  'xml', 
+ 
+        // success identifies the function to invoke when the server response 
+        // has been received 
+        success:   processXml 
+    }); 
+	
+	function processXml(responseXML) { 
+    // 'responseXML' is the XML document returned by the server; we use 
+    // jQuery to extract the content of the message node from the XML doc 
+	    var message = $('image',responseXML).text(); 
+    $('#virtualart').attr('src',message);
+	
+	  $(".lightbox").fadeOut(150);
+  $("#virtualart").fadeIn(2000,function(){
+  var width = $("#virtualart").width();
+  var height = $("#virtualart").height();
+  var ymargin = 503 - height;
+  var xmargin = 960 - width;
+  $("#virtualart").css('top',ymargin);
+	});
+	
+}
+	
+
+
+$('#addAddress').click(function(){
+	
+var addr = $('#address').attr('value');
+	
+streetview(addr);
+
+$('#panoflash2').click();
+	
+$('#addArt').fadeIn(1000);	
+	  return false; 
+	
+});
+	
+
+  
+});
+</script>
+
+
+
+</head>
+<body onunload="GUnload()">
+    <div id="header">
+<img src="images/logo.png" id="logo"/> 
+    </div>
+  <div id="wrapper">
+
+
+<div class="black_overlay lightbox">&nbsp;</div>
+<div id="popup1" class="lightbox">
+<div style="margin:auto;">
+
+<h1 style="color:#555555;">Select an image to upload:</h1><br/>
+<form name="xmlForm" id="xmlForm" enctype="multipart/form-data" method="post" action="http://davidykay.com:8080/virtualart/art?format=xml">
+<div style="display:none;">
+	<input type="hidden" value="image" name="name" />
+    Lat:&nbsp;<input name="latitude" value="0" id="txtLat" type="text" />
+
+    Lng:&nbsp;<input name="longitude" value="0" id="txtLong" type="text" /><br />
+    Y:&nbsp;&nbsp;<input id="txtYaw" value="0" name="direction" type="text" /><br/>
+    P:&nbsp;&nbsp;<input id="txtPitch" value="0" name="pitch" type="text" /><br/>
+	<input type="hidden" value="0" name="elevation" />
+   <!-- Z:&nbsp;&nbsp;<input id="txtZoom" type="text" disabled="disabled" /><br/> -->
+    </div>
+<div>
+<input type="file" name="image" /><br/><br/>
+<input id="addImage" type="submit" value="Save">
+
+</form>
+
+
+
+
+
+</div></div></div>
+
+
+
+
+
+    <div id="main" style="position:relative;height:1000px;">
+
+
+   <!--  <div id="steps"></div> -->
+
+
+  
+<form id="geocode">
+
+
+<div id="addr">
+<h3 style="display:inline;color:#666666;display:inline;font-family:helvetica,arial;font-size:0.9em;margin:4px;">
+Go to Address</h3>
+<input id="address" /> 
+<input type="submit" value="GO" id="addAddress">
+</div></form>
+
+
+<div id="addArt">
+<h3 style="display:inline;color:#666666;display:inline;font-family:helvetica,arial;font-size:0.9em;margin:4px;">
+</h3>
+<input type="submit" style="height:30px; font-weight:bold; font-size:1.1em;color:#ec5433;" value="SAVE YOUR ART TO THIS SPOT!" id="sendToServer">
+</div>
+
+  
+<div id="streetview" style="position:relative;width: 960px;text-align:center;top:60px;">
+    <div id="panorama" style="width: 960px; height: 515px; position:absolute; border: 1px solid black">
+    </div>
+    
+	<img id="virtualart" src="r2d2.png" style="position:relative; display:none; bottom:0px; "/>
+</div>
+
+    <br />
+
+
+
+    <div id="map" style="display:none;width: 600px; height: 300px;s">
+
+    </div>
+    
+  
+  
+  
+      
+    </div>
+  </div>
+</body>
+</html>
