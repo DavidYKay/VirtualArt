@@ -6,7 +6,7 @@ import java.util.EventListener;
 import android.content.Context;
 import android.location.Location;
 
-import com.virtualart.virtualart.model.UpdateManager.UpdateManagerListener;
+import com.virtualart.virtualart.model.ArtUpdateManager.UpdateManagerListener;
 import com.virtualart.virtualart.util.EventListenerList;
 import com.virtualart.virtualart.util.SensorHelper;
 
@@ -27,23 +27,20 @@ public class ArtModel implements UpdateManagerListener {
     }
 
     //HELPERS 
-    private UpdateManager updateManager = new UpdateManager(this);
-    private SensorHelper sensorHelper;
+    private ArtUpdateManager updateManager = new ArtUpdateManager(this);
 
     //STATE VARIABLES
 	private ArrayList<ArtItem> artItems = new ArrayList<ArtItem>();
 	private Location currentLocation;
 	private float[] rotationMatrix;
-	private Context context;
+
+	private SensorHelper sensorHelper;
 
     /**
      * 
      */
-    public ArtModel(Context context) {
-    	this.context = context;
-    	sensorHelper = new SensorHelper(context);
-        //Register for sensor updates
-        //sensorManager.
+    public ArtModel(SensorHelper helper) {
+    	this.sensorHelper = helper;               
     }
 	
 	public ArrayList<ArtItem> getArtItems() {
@@ -53,6 +50,7 @@ public class ArtModel implements UpdateManagerListener {
 		return currentLocation;
 	}
 	public float[] getRotationMatrix() {
+//        return null;
 		return sensorHelper.getRotationMatrix();
 	}
 

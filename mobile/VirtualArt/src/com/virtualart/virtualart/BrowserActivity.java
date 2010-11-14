@@ -15,6 +15,7 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.virtualart.virtualart.model.ArtItem;
 import com.virtualart.virtualart.model.ArtModel;
+import com.virtualart.virtualart.model.ArtSingleton;
 import com.virtualart.virtualart.model.ArtModel.ArtModelListener;
 import com.virtualart.virtualart.render.image.ImageRenderer;
 
@@ -36,7 +37,10 @@ public class BrowserActivity extends Activity implements ArtModelListener {
         // MODEL
         ////////////////////////////////////////
 
-        mModel = new ArtModel(this);
+        //We need to init it first. Ugly, I know
+        ArtSingleton.initSingleton(this);
+        ArtSingleton singleton = ArtSingleton.getInstance();
+        mModel = singleton.getArtModel();
         mModel.addListener(this);
 
         ////////////////////////////////////////

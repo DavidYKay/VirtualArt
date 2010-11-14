@@ -34,13 +34,19 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
-public class DrawableManager {
+import com.virtualart.virtualart.model.FetchManager;
+
+public class DrawableManager extends FetchManager {
+	public interface DrawableManagerListener {
+		public void setFetchedDrawable(Drawable drawable);
+	}
+	
     private final Map<String, Drawable> drawableMap;
 
     public DrawableManager() {
     	drawableMap = new HashMap<String, Drawable>();
     }
-
+    
     public Drawable fetchDrawable(String urlString) {
     	if (drawableMap.containsKey(urlString)) {
     		return drawableMap.get(urlString);
@@ -91,11 +97,27 @@ public class DrawableManager {
     	thread.start();
     }
 
-    private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-    	DefaultHttpClient httpClient = new DefaultHttpClient();
-    	HttpGet request = new HttpGet(urlString);
-    	HttpResponse response = httpClient.execute(request);
-    	return response.getEntity().getContent();
-    }
+    public void fetchDrawableOnThreadForListener(final String urlString, final DrawableManagerListener artItem) {
+    	if (drawableMap.containsKey(urlString)) {
+    		artItem.setFetchedDrawable(drawableMap.get(urlString));
+    	}
 
+    	final Handler handler = new Handler() {
+    		@Override
+    		public void handleMessage(Message message) {
+    			artItem.setFetchedDrawable((Drawable) message.obj);
+    		}
+    	};
+
+    	Thread thread = new Thread() {
+    		@Override
+    		public void run() {
+    			//TODO : set artItem to a "pending" image
+    			Drawable drawable = fetchDrawable(urlString);
+    			Message message = handler.obtainMessage(1, drawable);
+    			handler.sendMessage(message);
+    		}
+    	};
+    	thread.start();
+	}
 }
