@@ -16,6 +16,9 @@
 
 package com.virtualart.virtualart;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -28,6 +31,8 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -35,6 +40,7 @@ import android.view.View;
 
 public class PaintActivity extends Activity
         implements ColorPickerDialog.OnColorChangedListener {  
+		private MyView myView;
 	
 	public interface OnColorChangedListener {
         void colorChanged(int color);
@@ -43,7 +49,8 @@ public class PaintActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new MyView(this));
+		myView = new MyView(this);
+        setContentView(myView);
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -86,6 +93,14 @@ public class PaintActivity extends Activity
             mPath = new Path();
             mBitmapPaint = new Paint(Paint.DITHER_FLAG);
         }
+
+		public Bitmap getBitmapCopy() {
+			//public Bitmap copy (Bitmap.Config config, boolean isMutable)
+			return mBitmap.copy(
+				mBitmap.getConfig(),
+				false
+			);
+		}
 
         @Override
         protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -150,11 +165,12 @@ public class PaintActivity extends Activity
         }
     }
     
-    private static final int COLOR_MENU_ID = Menu.FIRST;
-    private static final int EMBOSS_MENU_ID = Menu.FIRST + 1;
-    private static final int BLUR_MENU_ID = Menu.FIRST + 2;
-    private static final int ERASE_MENU_ID = Menu.FIRST + 3;
+    private static final int COLOR_MENU_ID   = Menu.FIRST;
+    private static final int EMBOSS_MENU_ID  = Menu.FIRST + 1;
+    private static final int BLUR_MENU_ID    = Menu.FIRST + 2;
+    private static final int ERASE_MENU_ID   = Menu.FIRST + 3;
     private static final int SRCATOP_MENU_ID = Menu.FIRST + 4;
+    private static final int SAVE_MENU_ID    = Menu.FIRST + 5;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -165,6 +181,7 @@ public class PaintActivity extends Activity
         menu.add(0, BLUR_MENU_ID, 0, "Blur").setShortcut('5', 'z');
         menu.add(0, ERASE_MENU_ID, 0, "Erase").setShortcut('5', 'z');
         menu.add(0, SRCATOP_MENU_ID, 0, "SrcATop").setShortcut('5', 'z');
+        menu.add(0, SAVE_MENU_ID, 0, "Save").setShortcut('6', 'x');
 
         /****   Is this the mechanism to extend with filter effects?
         Intent intent = new Intent(null, getIntent().getData());
@@ -214,6 +231,49 @@ public class PaintActivity extends Activity
                 mPaint.setXfermode(new PorterDuffXfermode(
                                                     PorterDuff.Mode.SRC_ATOP));
                 mPaint.setAlpha(0x80);
+                return true;
+            case SAVE_MENU_ID:
+				Log.v("PaintActivity", "saveButtonPresed");
+				//Save current as bitmap
+				//String filename = "/sdcard/mypic.png";
+				String filename = "mypic.png";
+				File extDir = Environment.getExternalStorageDirectory();
+				File file = new File(
+					extDir,
+					filename
+				);
+				if (file.exists()) {
+					file.delete();
+				}
+
+				FileOutputStream out = null;
+				try {
+					//if (file.createNewFile()) {
+					if (true) {
+						//out = openFileOutput(
+						//	filename, 
+						//	Context.MODE_PRIVATE
+						//);
+						out = new FileOutputStream(file.getPath());
+						boolean result = myView.getBitmapCopy().compress(Bitmap.CompressFormat.PNG, 90, out);
+						if (result) {
+							Log.v("Save", "Success");
+						} else {
+							Log.v("Save", "Fail");
+						}
+
+					} else {
+						Log.v (
+								"Save",
+								"couldn't create file at: " + file.getAbsolutePath()
+						);
+					}
+					out.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+				//Prepare for upload
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
