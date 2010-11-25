@@ -1,0 +1,41 @@
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.overtweb.com/virtualart/jquery.form.js"></script>
+
+<script type="text/javascript">
+
+// prepare the form when the DOM is ready 
+$(document).ready(function() { 
+    // bind form using ajaxForm 
+    $('#xmlForm').ajaxForm({ 
+        // dataType identifies the expected content type of the server response 
+        dataType:  'xml', 
+ 
+        // success identifies the function to invoke when the server response 
+        // has been received 
+        success:   processXml 
+    }); 
+	
+	function processXml(responseXML) { 
+    // 'responseXML' is the XML document returned by the server; we use 
+    // jQuery to extract the content of the message node from the XML doc 
+	    var message = $('image',responseXML).text(); 
+    alert(message); 
+}
+	
+});
+
+</script>
+
+<form name="xmlForm" id="xmlForm" enctype="multipart/form-data" method="post" action="http://davidykay.com:8080/virtualart/art?format=xml">
+<input type="hidden" value="test1" name="name" />
+<input type="hidden" value="40.7189089" name="latitude" />
+<input type="hidden" value="-74.001751" name="longitude" />
+<input type="hidden" value="176.04" name="direction" />
+<input type="hidden" value="-0.14" name="pitch" />
+<input type="hidden" value="0" name="elevation" />
+<input type="file" name="image"  id="image"/> 
+<input type="submit" />
+</form>
+
+<

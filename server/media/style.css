@@ -1,0 +1,119 @@
+#background {
+    width: 100%; 
+    height: 100%; 
+    position: absolute; 
+    left: 0px; 
+    top: 0px; 
+    z-index: 0;
+}
+
+.stretch {
+   width:100%;
+ //  height:100%;
+}
+
+
+* {
+	margin:0;
+	padding:0;
+	outline:none;
+	}
+	
+body{
+//background: #000 url(/media/image/bg2.jpg) no-repeat top center;
+
+}
+
+#logo{
+width: 450px;
+height: 100px;
+top: 5px;
+left: 55px;
+position: absolute;
+background:  url(image/logo.png) no-repeat top left;
+
+}
+
+#phone{
+background: url(image/phone.png) no-repeat top center;
+position: absolute;
+top: 150px;
+left: 750px;
+width: 260px;
+height: 520px;
+}
+
+
+#text{
+background: url(image/text.png) no-repeat top left;
+position: absolute;
+top: 180px;
+left: 230px;
+width: 250px;
+height: 250px;
+}
+
+#ribbon{
+background: url(image/ribbon.png) repeat-x;
+width: 100%;
+height: 150px;
+position: absolute;
+top:300px;
+}
+
+#email{
+width: 600px;
+position: absolute;
+left: 650px;
+top: 25px;
+}
+
+#upload{
+width: 234px;
+height: 59px;
+background: url(image/upload.png) no-repeat top left;
+position: absolute;
+top: 550px;
+left:150px;
+}
+
+
+#app{
+width: 234px;
+height: 59px;
+background: url(image/get.png) no-repeat top left;
+position: absolute;
+top: 550px;
+left:380px;
+}
+
+
+#mce-EMAIL{
+border: none;
+font-size: 16px;
+text-align: center;
+width: 250px;
+height: 50px;
+float: left;
+background: url(image/email.png) no-repeat top left;
+color: #6f6f6f;
+}
+
+#mc-embedded-subscribe{
+background: url(image/subscribe.png) no-repeat top left;
+width: 250px;
+height: 50px;
+float: left;
+border: none;
+position: absolute;
+top: 15px;
+left: 290px;
+}
+
+
+fieldset{
+border: none;
+}
+#mce-success-response {
+    display:none;
+}

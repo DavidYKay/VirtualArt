@@ -1,0 +1,9 @@
+AddHandler fcgid-script .fcgi
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+RewriteRule ^(media/.*)$ - [L]
+RewriteRule ^(adminmedia/.*)$ - [L]
+RewriteCond %{REQUEST_URI} !(cgi-bin/virtualart.fcgi)
+RewriteRule ^(.*)$ cgi-bin/virtualart.fcgi/$1 [L]
+
