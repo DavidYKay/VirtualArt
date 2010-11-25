@@ -37,3 +37,6 @@ def add_art(request):
 
 def test_upload(request):
     return render_to_response('virtualart.html', {})
+
+def load_index(request):
+    return render_to_response('index.html', {})

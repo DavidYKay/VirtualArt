@@ -37,13 +37,16 @@ class ArtHandler(BaseHandler):
                 fname,ext = request.FILES['image']._get_name().split('.')
                 request.FILES['image']._set_name(str(random.getrandbits(32)) + "." + ext)
                 fields['image'] = request.FILES['image']
+
             if id in request.POST and Art.objects.filter(id=request.POST['id']).exists():
                 art = Art.objects.get(id=request.POST['id'])
                 art.update(**fields)
-            else:
+            elif 'image' in request.FILES:
                 art = Art(**fields)
                 art.save()
                 print "created", art
+            else:
+                return "Bad Request: image file missing"
             return [art.get_data(host)]
             #return "<textarea>test</textarea>" 
         except:

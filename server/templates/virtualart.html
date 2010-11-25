@@ -6,7 +6,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://www.overtweb.com/virtualart/jquery.form.js"></script>
 
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxEPVsxDdPXi5z1UKylPj9hTOyHHwwwN1jdcuErCApWZfxmOt0hQtX_UQ8vjPwwPotbT4SpJzKK0x8Q"
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxEPVsxDdPXi5z1UKylPj9hRgpNsWCJnP5VHum1p_0hWj3VRnERQN-kinVbJQY-HZ__c9uslR53Jd_w"
         type="text/javascript"></script>
         
         
@@ -99,7 +99,7 @@
             lastPoint = a.latlng;
         });
 		
-		$('#panoflash2').click();
+		$('#map').click();
 		
 		
             } else {
@@ -136,7 +136,7 @@
     #header {
        margin:0px;
        padding:4px;
-       background:url("images/gradient.png") repeat-x scroll 0 0 transparent;
+       background:url("http://overtweb.com/virtualart/images/gradient.png") repeat-x scroll 0 0 transparent;
 	   height:44px;
        position:relative;
     }
@@ -237,7 +237,7 @@
     }
 	
 	.black_overlay{
-	display: block;
+	display: none;
 	position: absolute;
 	top: 0%;
 	left: 0%;
@@ -245,7 +245,7 @@
 	height: 100%;
 	background-color: black;
 	z-index:1001;
-	-moz-opacity: 0.5;
+	-moz-opacity: 0.3;
 	opacity:.80;
 	filter: alpha(opacity=80);
 	
@@ -253,7 +253,7 @@
  
 
  #popup1 {
-	 		display: block;
+	 		display: none;
 			position: absolute;
 			top: 25%;
 			left: 25%;
@@ -269,9 +269,7 @@
 
  #addr {	 
  
-			height:50px;
 			left:100px;
-			margin:18px;
 			position:absolute;
  
 		 }
@@ -283,10 +281,12 @@
 			right:100px;
 			margin:12px;
 			position:absolute;
-			display:none;
+			display:block;
  
 		 }
-
+#sendToServer {
+	display:none;	
+}
 	
     </style>
 
@@ -296,7 +296,8 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
+place = "no";
+
 	    // bind form using ajaxForm 
     $('#xmlForm').ajaxForm({ 
         // dataType identifies the expected content type of the server response 
@@ -308,10 +309,14 @@ $(document).ready(function() {
     }); 
 	
 	function processXml(responseXML) { 
+	function response(){
     // 'responseXML' is the XML document returned by the server; we use 
     // jQuery to extract the content of the message node from the XML doc 
-	    var message = $('image',responseXML).text(); 
-    $('#virtualart').attr('src',message);
+	    var getImage = $('image',responseXML).text(); 
+		var getID = $('id',responseXML).text();
+		var idField = '<input id="addID" name="id" type="text" value="' + getID + '"/>'
+    $('#virtualart').attr('src',getImage);
+	$('#hiddenForm').prepend(idField);
 	
 	  $(".lightbox").fadeOut(150);
   $("#virtualart").fadeIn(2000,function(){
@@ -319,9 +324,29 @@ $(document).ready(function() {
   var height = $("#virtualart").height();
   var ymargin = 503 - height;
   var xmargin = 960 - width;
+  place = "yes";
   $("#virtualart").css('top',ymargin);
+  
+  $('input:text[name=image]').remove();
+  
 	});
+
+
+	}
+  function place(){
+		$('#wrapper').css('background','red');
+		
+	}
 	
+	if (place == "yes") {
+  place();
+	
+	} else {
+
+    response();
+	
+}
+
 }
 	
 
@@ -332,14 +357,28 @@ var addr = $('#address').attr('value');
 	
 streetview(addr);
 
-$('#panoflash2').click();
+$('#panorama').click();
 	
-$('#addArt').fadeIn(1000);	
 	  return false; 
 	
 });
 	
+$('#sendToServer').click(function(){
+$('#xmlForm').submit();
+});
 
+$('#addImage').click(function(){
+$('#imgloading').fadeIn(100);
+});
+
+$('#openUploadPop').click(function(){
+$('.black_overlay').fadeIn(300);
+$('#popup1').fadeIn(300);
+$(this).hide();
+$('#sendToServer').show();
+});
+
+streetview('Jardin du Carrousel, Paris, France');
   
 });
 </script>
@@ -349,7 +388,7 @@ $('#addArt').fadeIn(1000);
 </head>
 <body onunload="GUnload()">
     <div id="header">
-<img src="images/logo.png" id="logo"/> 
+<img src="http://www.overtweb.com/virtualart/images/logo.png" id="logo"/> 
     </div>
   <div id="wrapper">
 
@@ -359,8 +398,8 @@ $('#addArt').fadeIn(1000);
 <div style="margin:auto;">
 
 <h1 style="color:#555555;">Select an image to upload:</h1><br/>
-<form name="xmlForm" id="xmlForm" enctype="multipart/form-data" method="post" action="http://davidykay.com:8080/virtualart/art?format=xml">
-<div style="display:none;">
+<form name="xmlForm" id="xmlForm" enctype="multipart/form-data" method="post" action="http://artmented.com/virtualart/art?format=xml">
+<div id="hiddenForm" style="display:none;">
 	<input type="hidden" value="image" name="name" />
     Lat:&nbsp;<input name="latitude" value="0" id="txtLat" type="text" />
 
@@ -368,19 +407,21 @@ $('#addArt').fadeIn(1000);
     Y:&nbsp;&nbsp;<input id="txtYaw" value="0" name="direction" type="text" /><br/>
     P:&nbsp;&nbsp;<input id="txtPitch" value="0" name="pitch" type="text" /><br/>
 	<input type="hidden" value="0" name="elevation" />
+  
    <!-- Z:&nbsp;&nbsp;<input id="txtZoom" type="text" disabled="disabled" /><br/> -->
-    </div>
+   </div>
 <div>
-<input type="file" name="image" /><br/><br/>
+<input id="fileUpload" type="file" name="image" /><br/><br/>
 <input id="addImage" type="submit" value="Save">
-
+</div>
+<img src="http://overtweb.com/virtualart/images/loading.gif" style="width:100px;margin:20px;display:none;" id="imgloading"/>
 </form>
 
 
 
 
 
-</div></div></div>
+</div></div>
 
 
 
@@ -397,17 +438,22 @@ $('#addArt').fadeIn(1000);
 
 
 <div id="addr">
-<h3 style="display:inline;color:#666666;display:inline;font-family:helvetica,arial;font-size:0.9em;margin:4px;">
-Go to Address</h3>
-<input id="address" /> 
-<input type="submit" value="GO" id="addAddress">
+<h3 style="border:0 solid #EC5433;
+color:#EC5433;cursor:pointer;font-family:helvetica,arial;font-size:1.1em;font-weight:bold;margin:0px;">
+<span>Go to Address: </span>
+<input style="border:2px solid #EC5433;padding:5px;margin:0 8px;" id="address" /> 
+<input style="border:0 solid #EC5433;background:#EC5433;
+color:white;cursor:pointer;font-family:helvetica,arial;font-size:1.1em;font-weight:bold;margin:11px;padding:10px 8px 9px;" type="submit" value="GO" id="addAddress">
+</h3>
 </div></form>
 
 
 <div id="addArt">
-<h3 style="display:inline;color:#666666;display:inline;font-family:helvetica,arial;font-size:0.9em;margin:4px;">
-</h3>
-<input type="submit" style="height:30px; font-weight:bold; font-size:1.1em;color:#ec5433;" value="SAVE YOUR ART TO THIS SPOT!" id="sendToServer">
+
+
+<div style="background:none repeat scroll 0 0 #EC5433;border:0 none;border:0px solid #EC5433;color:white;cursor:pointer;font-family:helvetica,arial;font-size:1.1em;font-weight:bold;padding:12px 8px 8px;" id="openUploadPop">SELECT ART TO UPLOAD</div>
+
+<div style="background:none repeat scroll 0 0 #EC5433;border:0 none;border:0px solid #EC5433;color:white;cursor:pointer;font-family:helvetica,arial;font-size:1.1em;font-weight:bold;padding:12px 8px 8px;display:none;" id="sendToServer">SAVE YOUR ART TO THIS SPOT!</div>
 </div>
 
   
@@ -422,7 +468,7 @@ Go to Address</h3>
 
 
 
-    <div id="map" style="display:none;width: 600px; height: 300px;s">
+    <div id="map" style="display:none;width: 600px; height: 300px;">
 
     </div>
     

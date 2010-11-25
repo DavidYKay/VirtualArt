@@ -5,6 +5,8 @@ import settings
 from django.contrib import admin
 admin.autodiscover()
 
+from virtualart.views import load_index
+
 urlpatterns = patterns('',
     # Example:
     # (r'^web/', include('web.foo.urls')),
@@ -15,6 +17,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+    (r'^$', load_index),
     (r'test/', include('virtualart.api.urls')),
     (r'^virtualart/', include('virtualart.api.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',

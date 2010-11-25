@@ -21,5 +21,6 @@ urlpatterns = patterns('',
     #url(r'^art$', art_resource, { 'emitter_format': 'ext-json' }),
     url(r'^art/(?P<id>\d+)$', art_resource),  
     url(r'^art$', art_resource),
+    url(r'^$', test_upload),
     url(r'^test$', test_upload),
 )
