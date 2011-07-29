@@ -2,13 +2,15 @@
 <resources>
     <string name="hello">Hello World, VirtualArt!</string>
     <string name="app_name">VirtualArt</string>
+
     <string name="browser">Browser</string>
+    <string name="camera">Camera</string>
+    <string name="cube">Cube</string>
+    <string name="get">Get</string>
     <string name="login">Login</string>
     <string name="paint">Paint</string>
-    <string name="sensor">Sensor</string>
-    <string name="camera">Camera</string>
-    <string name="post">Post</string>
-    <string name="get">Get</string>
     <string name="place_photo">Place Photo</string>
+    <string name="post">Post</string>
     <string name="post_photo">Post Photo</string>
+    <string name="sensor">Sensor</string>
 </resources>

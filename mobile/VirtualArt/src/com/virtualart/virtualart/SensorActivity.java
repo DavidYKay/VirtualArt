@@ -69,18 +69,24 @@ public class SensorActivity extends Activity implements SensorHelperListener {
             ).toString()
         );
     }
+   
     
-    private Matrix createDebugMatrix(float[] rotationMatrix) {
-        //return new Matrix(
-        //    rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
-        //    rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
-        //    rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
-        //);
-        return new Matrix(
-            rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
-            rotationMatrix[3], rotationMatrix[5], rotationMatrix[5],
-            rotationMatrix[6], rotationMatrix[7], rotationMatrix[8]
-        );
-    }
+    public static Matrix createDebugMatrix(float[] rotationMatrix) {
+    	if (rotationMatrix.length == 16) {
+    		return new Matrix(
+    				rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
+    				rotationMatrix[4], rotationMatrix[5], rotationMatrix[6],
+    				rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]
+    				); 
+    	} else if (rotationMatrix.length == 9) {
 
+    		return new Matrix(
+    				rotationMatrix[0], rotationMatrix[1], rotationMatrix[2],
+    				rotationMatrix[3], rotationMatrix[4], rotationMatrix[5],
+    				rotationMatrix[6], rotationMatrix[7], rotationMatrix[8]
+    				);
+    	} else {
+    		return null;
+    	}
+    }
 }

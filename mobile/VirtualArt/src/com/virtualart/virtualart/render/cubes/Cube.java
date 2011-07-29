@@ -25,7 +25,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * A vertex shaded cube.
  */
-class Cube
+public class Cube
 {
     public Cube()
     {

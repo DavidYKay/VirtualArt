@@ -1,50 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.virtualart.virtualart"
-    android:versionCode="1"
-    android:versionName="1.0">
+  package="com.virtualart.virtualart"
+  android:versionCode="1"
+  android:versionName="1.0">
 
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
+  <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
 
-        <!--
-        <uses-library android:name="com.google.android.maps" />
-        -->
+    <!--
+    <uses-library android:name="com.google.android.maps" />
+    -->
 
-        <activity android:name=".MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".PaintActivity"
-            android:label="@string/paint">
-        </activity>
-        <activity android:name=".LoginActivity"
-            android:label="@string/login">
-        </activity>
-        <activity android:name=".BrowserActivity"
-            android:label="@string/browser">
-        </activity>
-        <activity android:name=".SensorActivity"
-            android:label="@string/sensor">
-        </activity>
-        <activity android:name=".CameraActivity"
-            android:label="@string/camera">
-        </activity>
-        <activity android:name=".PostActivity"
-            android:label="@string/post">
-        </activity>
-        <activity android:name=".PlacePhotoActivity"
-            android:label="@string/place_photo">
-        </activity>
-    </application>
+    <activity android:name=".MainActivity"
+      android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:name=".PaintActivity"
+      android:label="@string/paint">
+    </activity>
+    <activity android:name=".LoginActivity"
+      android:label="@string/login">
+    </activity>
+    <activity android:name=".BrowserActivity"
+      android:label="@string/browser">
+    </activity>
+    <activity android:name=".SensorActivity"
+      android:label="@string/sensor">
+    </activity>
+    <activity android:name=".CubeActivity"
+      android:label="@string/cube">
+    </activity>
+    <activity android:name=".CameraActivity"
+      android:label="@string/camera">
+    </activity>
+    <activity android:name=".PostActivity"
+      android:label="@string/post">
+    </activity>
+    <activity android:name=".PlacePhotoActivity"
+      android:label="@string/place_photo">
+    </activity>
+  </application>
 
-    <uses-sdk android:minSdkVersion="4" />
-    
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-sdk android:minSdkVersion="4" />
 
-</manifest> 
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+</manifest>

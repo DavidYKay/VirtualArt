@@ -46,10 +46,10 @@ public class SensorHelper implements SensorEventListener {
 	}
 
 	public float[] getRotationMatrix() {
-        //float[] rotationMatrix    = new float[16];
-        //float[] inclinationMatrix = new float[16];
-        float[] rotationMatrix    = new float[9];
-        float[] inclinationMatrix = new float[9];
+        float[] rotationMatrix    = new float[16];
+        float[] inclinationMatrix = new float[16];
+//        float[] rotationMatrix    = new float[9];
+//        float[] inclinationMatrix = new float[9];
 
         sMgr.getRotationMatrix(
             rotationMatrix,

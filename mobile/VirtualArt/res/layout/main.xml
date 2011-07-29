@@ -4,41 +4,46 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <LinearLayout 
+    <LinearLayout
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         >
         <Button android:id="@+id/browser_button"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/browser"
             />
         <Button android:id="@+id/paint_button"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/paint"
             />
         <Button android:id="@+id/sensor_button"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/sensor"
             />
         <Button android:id="@+id/camera_button"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/camera"
             />
         <Button android:id="@+id/post_button"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/post"
             />
         <Button android:id="@+id/place_photo_button"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/place_photo"
+            />
+        <Button android:id="@+id/cube_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cube"
             />
         <!--
         -->

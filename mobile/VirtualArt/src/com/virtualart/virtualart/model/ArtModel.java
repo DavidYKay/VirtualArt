@@ -108,9 +108,9 @@ public class ArtModel implements UpdateManagerListener {
             listener.artModelUpdatedPosition(this);
         }
     }
-
-	@Override
-	 public void newArtFinishedUpdating(ArrayList<ArtItem> newItems) {
+    
+    @Override
+	public void newArtFinishedUpdating(ArrayList<ArtItem> newItems) {
         //Out with the old
         clearItems();
 
