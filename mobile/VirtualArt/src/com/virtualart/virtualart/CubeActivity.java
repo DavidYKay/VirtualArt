@@ -170,7 +170,8 @@ class TouchSurfaceView extends GLSurfaceView implements SensorHelperListener {
           FloatBuffer.wrap(mRotationMatrix.getArray())
           );
 
-      gl.glTranslatef(0, 0, -3.0f);
+      //gl.glTranslatef(0, 0, -3.0f);
+      gl.glTranslatef(-3.0f, 0, 0);
 
       gl.glRotatef(mAngleX, 0, 1, 0);
       gl.glRotatef(mAngleY, 1, 0, 0);
